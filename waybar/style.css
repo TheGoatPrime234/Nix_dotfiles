@@ -1,0 +1,147 @@
+@import 'current.css';
+
+* {
+    border: none;
+    border-radius: 0px;
+
+    font-family: 'GeistMono Nerd Font Propo', 'JetBrainsMono Nerd Font Propo', sans-serif;
+    font-weight: bold;
+    font-size: 15px;
+
+    min-height: 0;
+    padding: 0;
+    margin: 0;
+}
+
+window#waybar {
+    background: transparent;
+}
+
+tooltip {
+    background: @bg0;
+    border: 1px solid @bgc1;
+    border-radius: 12px;
+}
+
+tooltip label {
+    color: @fg;
+    padding: 6px;
+}
+
+#battery,
+#pulseaudio,
+#network,
+#clock,
+#mpris,
+#workspaces,
+#custom-notification {
+    background-color: @bg0;
+    padding: 0 12px 0 12px;
+    margin: 0 4px 0 4px;
+    border-radius: 50px;
+    border: 1px solid @bgc1;
+}
+
+#left,
+#center,
+#right {
+    padding: 2px;
+    border-radius: 50px;
+    background: transparent;
+}
+
+#center {
+    background-color: @bg0;
+    border: 1px solid @bgc1;
+}
+
+#center {
+    color: @ac1;
+}
+
+#right {
+	margin: 2px 8px 2px 2px;
+}
+
+#left {
+	margin: 2px 2px 2px 8px;
+}
+#custom-osicon {
+    background-color: @bg0;
+    color: @fg;
+    font-size: 20;
+    padding: 4px 8px;
+    border-radius: 50px;
+    margin: 0;
+}
+
+#clock.time {
+    margin: 0 8px 0 2px;
+}
+
+#clock.date {
+    margin: 0 2px 0 8px;
+}
+
+#custom-notification {
+    color: @ac1;
+}
+
+#pulseaudio {
+    color: @ac1;
+}
+
+#network {
+    color: @ac1;
+}
+
+#battery {
+    color: @ac1;
+}
+
+#mpris {
+    color: @ac1;
+}
+
+#workspaces {
+    padding: 5px 3px;
+    border-radius: 18px;
+    border: 1px solid @bgc1;
+    color: @fg;
+}
+
+#workspaces button {
+    padding: 0px 6px;
+    margin: 0px 3px;
+    border-radius: 50px;
+    color: transparent;
+    background-color: @blue;
+    transition: all 0.15s ease-in-out;
+    ;
+}
+
+#workspaces button.active {
+    background-color: @ac1;
+    color: @bg0;
+    min-width: 50px;
+    transition: all 0.15s ease-in-out;
+    font-size: 13px;
+}
+
+#workspaces button:hover {
+    background-color: @ac3;
+    color: @bg0;
+    border-radius: 16px;
+    min-width: 50px;
+    background-size: 400% 400%;
+    transition: all 0.15s ease-in-out;
+}
+
+#workspaces button.urgent {
+    background-color: @red;
+    color: @bg0;
+    border-radius: 16px;
+    min-width: 50px;
+    background-size: 400% 400%;
+    transition: all 0.15s ease-in-out;
+}
