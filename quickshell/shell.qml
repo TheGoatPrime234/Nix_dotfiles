@@ -102,28 +102,8 @@ ShellRoot { // ShellRoot halt
 					Uhr1 {
 
 					}
-					//
-					Rectangle { // Icon Widget Root
-						id: iuseNixosbtw
-						anchors {
-							verticalCenter: parent.verticalCenter
-						}
-						implicitHeight: Theme.h3 
-						implicitWidth: iuseNixosbtwtext.implicitWidth + Theme.impW 
-						radius: Theme.rad 
-						color: Theme.trans 
-						//
-						Text { //Icon
-							id: iuseNixosbtwtext
-							anchors.centerIn: parent 
-							text: "󱄅"
-							color: "#ffffff"
-							font {
-								pixelSize: 35
-								bold: true 
-								family: Theme.fnt 
-							}
-						}
+					Iusenixosbtw {
+
 					}
 					Uhr2 {
 
