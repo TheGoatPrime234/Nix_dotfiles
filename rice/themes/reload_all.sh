@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
-pkill -SIGUSR2 waybar 
-swaync-client -R
-swaync-client -rs
+quickshell kill
+quickshell -d
 pkill -9 hyprpaper
 hyprpaper & disown
-hyprctl reload
