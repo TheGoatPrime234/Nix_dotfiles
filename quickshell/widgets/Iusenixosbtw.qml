@@ -9,6 +9,7 @@ import Quickshell.Services.Pipewire
 import Quickshell.Services.UPower
 import Quickshell.Services.Notifications
 import "./../color"
+import "./../windows"
 
 Rectangle { // Icon Widget Root
 	id: iuseNixosbtw
@@ -30,5 +31,13 @@ Rectangle { // Icon Widget Root
 			bold: true 
 			family: Theme.fnt 
 		}
+	}
+	MouseArea {
+	    anchors.fill: parent
+	    onClicked: themeswitcher.visible = !themeswitcher.visible
+	}
+	Themeswitcher {
+	    id: themeswitcher
+	    visible: false 
 	}
 }
