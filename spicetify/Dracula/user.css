@@ -1,0 +1,494 @@
+.main-playButton-PlayButton.main-playButton-primary {
+  color: var(--spice-main);
+  background-color: var(--spice-button);
+}
+
+.connect-title,
+.connect-header {
+  display: none;
+}
+
+.main-entityTitle-subtitle.main-entityTitle-gray,
+.main-entityHeader-metaDataText {
+  color: var(--spice-text) !important;
+}
+
+.main-duration-container {
+  color: var(--spice-subtext);
+}
+
+.main-entityTitle-subtitle {
+  color: var(--spice-extratext);
+}
+
+span.artist-artistVerifiedBadge-badge svg:nth-child(1) {
+  fill: black;
+}
+
+.main-addButton-button {
+  color: rgba(var(--spice-rgb-card), .7) !important;
+}
+
+.main-trackList-trackListRow.main-trackList-active .main-trackList-rowMarker,
+.main-trackList-trackListRow.main-trackList-active .main-trackList-rowTitle {
+  color: var(--spice-text-bright-accent) !important;
+}
+
+.main-trackList-rowTitle {
+  color: var(--spice-text) !important;
+}
+
+.x-sortBox-sortDropdown {
+  color: var(--spice-subtext);
+}
+
+.encore-internal-color-text-subdued {
+  color: var(--spice-subtext);
+}
+
+#context-menu > div > ul > li:nth-child(3) > a {
+  display: none !important;
+}
+
+.main-topBar-topbarContent:not(.main-topBar-topbarContentFadeIn)>* {
+  opacity: 1 !important;
+}
+
+.main-trackList-rowPlayPauseButton {
+  width: 22px !important;
+  cursor: pointer !important;
+  margin-left: -3px !important;
+}
+
+.search-searchCategory-carouselButton,
+.search-searchCategory-carouselButton:hover {
+  background-color: var(--spice-button-background);
+}
+
+.LegacyChipInner__ChipInnerComponent-sc-1qguixk-0 {
+  --background-base: var(--spice-button-active) !important;
+  --background-highlight: var(--spice-button-active) !important;
+  --background-press: var(--spice-button-active) !important;
+  --background-tinted-base: var(--spice-button-background) !important;
+  --background-tinted-highlight: var(--spice-button-background) !important;
+  --background-tinted-press: var(--spice-button-background) !important;
+}
+
+.x-filterBox-expandedOrHasFilter {
+  background-color: var(--spice-card);
+  border-radius: 5px;
+}
+
+.encore-bright-accent-set {
+  --background-highlight: var(--spice-button-active) !important;
+  --background-press: var(--spice-button-active) !important;
+}
+
+.main-trackList-playingIcon,
+.view-homeShortcutsGrid-equaliser,
+.FpmhhFL8lCsiyh3X0fjK {  /* Div containing equalizer SVG in Connect to a device screen */
+  /* Can't use accent color here because there isn't a similar enough filter */
+  filter: brightness(0) saturate(100%) invert(100%) sepia(28%) saturate(321%) hue-rotate(19deg) brightness(103%) contrast(94%);
+}
+
+.DquSH3YjnaIIXMZiOvwA,  /* Add to playlist menu */
+.X5mwWAw7ijxPvQOoabzQ {  /* Action bar of Add to playlist menu */
+  background-color: var(--spice-card);
+}
+
+._fXgQSvNv1uUeA96LmFb {  /* Div containing scrollable content inside the Add to playlist menu */
+  /* By default the height of the div is too small. This is an issue of Spotify, not Spicetify. */
+  height: 150px !important;
+}
+
+
+/* Sidebar */
+
+.main-navBar-navBarLinkActive,
+.main-navBar-navBarLinkActive:focus,
+.logo {
+  background-color: var(--spice-card) !important;
+  color: var(--spice-main) !important;
+}
+
+.main-likedSongsButton-likedSongsIcon,
+.main-createPlaylistButton-createPlaylistIcon,
+.main-yourEpisodesButton-yourEpisodesIcon {
+  background: var(--spice-text) !important;
+  border-radius: 0px !important;
+}
+
+.main-collectionLinkButton-collectionLinkButton {
+  color: var(--spice-main) !important;
+}
+
+.main-collectionLinkButton-collectionLinkButton .main-collectionLinkButton-collectionLinkText,
+.main-createPlaylistButton-button {
+  color: var(--spice-text) !important;
+}
+
+.main-collectionLinkButton-collectionLinkButton.main-collectionLinkButton-selected .main-collectionLinkButton-icon {
+  opacity: .7 !important;
+}
+
+.main-rootlist-rootlistDividerGradient {
+  background: linear-gradient(180deg, var(--spice-main), transparent);
+}
+
+.main-rootlist-rootlistDivider {
+  background-color: unset !important;
+}
+
+.AIlmv6h8bR5NY5R0VceT,  /* Create button */
+.AIlmv6h8bR5NY5R0VceT:hover {
+  background-color: var(--spice-button-background);
+}
+
+.ChipClear__ChipClearComponent-sc-zv5btm-0 {  /* Clear filters button */
+  background-color: var(--spice-button-background);
+}
+
+
+/* Queue */
+
+.queue-tabBar-active {
+  background-color: var(--spice-card) !important;
+}
+
+.queue-tabBar-headerItemLink {
+  color: var(--spice-text) !important;
+}
+
+
+/* Header */
+
+.main-home-homeHeader,
+.x-441-entityHeader-overlay,
+.main-actionBarBackground-background,
+.main-entityHeader-overlay,
+.main-entityHeader-backgroundColor,
+.x-914-entityHeader-overlay,
+.x-914-actionBarBackground-background {
+  background-color: unset !important;
+  background-image: unset !important;
+}
+
+.main-topBar-topbarContent:not(.main-topBar-topbarContentFadeIn)>* {
+  opacity: unset !important;
+}
+
+.main-entityHeader-topbarContent:not(.main-entityHeader-topbarContentFadeIn)>* {
+  opacity: 0 !important;
+}
+
+.main-topBar-background {
+  background-color: var(--spice-main);
+}
+
+.main-topBar-overlay,
+.x-441-actionBarBackground-background {
+  background-color: var(--spice-main) !important;
+}
+
+.main-entityHeader-shadow {
+  box-shadow: 0 04px 20px #21212130;
+}
+
+.main-entityHeader-background.main-entityHeader-gradient {
+  opacity: .4;
+}
+
+.main-entityHeader-background.main-entityHeader-overlay:after {
+  background-image: linear-gradient(transparent, transparent), linear-gradient(var(--spice-main), var(--spice-main));
+}
+
+.main-trackList-trackListHeaderStuck.main-trackList-trackListHeader {
+  background-color: var(--spice-card);
+}
+
+
+/* Artist page */
+
+.artist-artistPick-pickComment {
+  background: unset !important;
+  border-radius: 0px !important;
+  border-bottom: solid 2px var(--spice-text) !important;
+  color: var(--spice-text) !important;
+}
+
+.artist-artistSavedTracks-imageContainer .artist-artistSavedTracks-heartIcon {
+  color: var(--spice-card);
+}
+
+/* Homepage */
+
+.main-home-filterChipsContainer {
+  /*  Hide home screen filter chips since they don't work with Spicetify.
+      See https://github.com/spicetify/cli/issues/3375 for reference.  */
+  display: none;
+}
+
+.view-homeShortcutsGrid-main {
+  background-color: var(--spice-card);
+}
+
+.view-homeShortcutsGrid-name {
+  color: var(--spice-text);
+}
+
+.main-shelf-title {
+  color: var(--spice-subtext)
+}
+
+.view-homeShortcutsGrid-shortcut,
+.view-homeShortcutsGrid-shortcut .view-homeShortcutsGrid-imageWrapper,
+.main-cardImage-imageWrapper,
+.main-cardImage-imagePlaceholder,
+.main-cardImage-image {
+  border-radius: 10px !important;
+}
+
+.view-homeShortcutsGrid-shortcut .view-homeShortcutsGrid-image {
+  border-radius: 10px 0 0 10px !important;
+}
+
+.main-cardImage-circular,
+.main-entityHeader-circle {
+  border-radius: 50% !important;
+}
+
+.main-entityHeader-image {
+  border-radius: 10px;
+}
+
+
+/* Friend activity */
+
+.main-buddyFeed-activityMetadata .main-buddyFeed-artistAndTrackName a,
+.main-buddyFeed-activityMetadata .main-buddyFeed-playbackContext a,
+.main-buddyFeed-activityMetadata .main-buddyFeed-usernameAndTimestamp a {
+  color: var(--spice-text) !important;
+}
+
+.main-buddyFeed-activityMetadata .main-buddyFeed-username a {
+  color: var(--spice-subtext) !important;
+}
+
+.main-avatar-avatar.main-avatar-withBadge:after {
+  background: var(--spice-extratext);
+}
+
+
+/* Settings page */
+
+.main-dropDown-dropDown {
+  background-color: var(--spice-sec-input) !important;
+  color: var(--spice-text) !important;
+}
+
+.x-settings-title {
+  color: var(--spice-tab-active) !important;
+}
+
+input:checked:not([disabled]):not(:active)~.x-toggle-indicatorWrapper {
+  background-color: var(--spice-sec-checked) !important;
+}
+
+input:not(:checked):not([disabled]):not(:active)~.x-toggle-indicatorWrapper {
+  background-color: var(--spice-sec-input);
+}
+
+
+/* Top bar and search page */
+
+.main-globalNav-navLink {
+  background-color: var(--spice-button-background) !important;
+}
+
+input {
+  color: var(--spice-text) !important;
+}
+
+.main-topBar-searchBar {
+  background: var(--spice-card) !important;
+}
+
+.x-833-searchInput-searchInputSearchIcon {
+  color: var(--spice-text) !important;
+}
+
+.IYex0sXu8fnCz1FqFbRe {  /* Search bar keyboard shortcut on-hover placeholcer */
+  background: linear-gradient(to right, transparent 0, var(--spice-card) 10%, var(--spice-card) 90%, transparent 100%);
+
+}
+
+.GimJ6fo6WOYPyWNVpSr1 {  /* Search suggestions */
+  background-color: var(--spice-card);
+}
+
+.x-833-heroCategoryCard-heroTitle,
+.x-833-categoryCard-title {
+  color: var(--spice-main) !important;
+}
+
+.main-type-mesto,
+.x-533-dropDown-dropDown {
+  color: var(--spice-text) !important;
+}
+
+.main-userWidget-box {
+  background-color: unset !important;
+  border-radius: 0px !important;
+  color: var(--spice-text) !important;
+}
+
+.main-userWidget-box:focus,
+.main-userWidget-box:hover,
+.main-userWidget-box[data-context-menu-open=true] {
+  border-radius: 10px !important;
+}
+
+.main-avatar-image {
+  padding-bottom: 8% !important;
+}
+
+.MGZ4oJmGVPrWsx5cT5hN {
+  background-color: var(--spice-main);
+}
+
+
+/* Cards */
+
+.main-card-card a,
+.main-card-card button {
+  color: var(--spice-extratext);
+}
+
+.main-card-card:hover,
+.main-card-card[data-context-menu-open=true] {
+  background-color: rgba(var(--spice-rgb-sec-card), .3) !important;
+}
+
+.main-contextMenu-menu,
+.main-card-card:focus-within,
+
+.main-deletePlaylistDialog-container {
+  background-color: var(--spice-sec-card) !important;
+}
+
+.main-keyboardShortcutsHelpModal-container,
+.main-trackCreditsModal-container {
+  background-color: var(--spice-main) !important;
+  color: var(--spice-text) !important;
+}
+
+.main-keyboardShortcutsHelpModal-header,
+.main-trackCreditsModal-header {
+  color: var(--spice-notification) !important;
+}
+
+.main-trackCreditsModal-sectionTitle {
+  color: var(--spice-subtext) !important;
+}
+
+.main-type-canon {
+  color: var(--spice-extratext) !important;
+}
+
+
+/* Profile page */
+
+.main-cardImage-imageWrapper {
+  background-color: var(--spice-sec-card) !important;
+}
+
+
+/* Player */
+
+.progress-bar--is-active .progress-bar__fg,
+:not(.no-focus-outline) .progress-bar:focus-within .progress-bar__fg {
+  background-color: var(--fg-color);
+}
+
+.main-shuffleButton-button.main-shuffleButton-on,
+.main-repeatButton-button.main-repeatButton-on {
+  color: var(--spice-button) !important;
+}
+
+.main-nowPlayingBar-container {
+  background-color: var(--spice-sec-player) !important;
+  border-top: unset !important;
+  height: 80px;
+}
+
+
+/* Now playing */
+
+.CvxzmyND_aGd2RR8ZoSr,
+.main-nowPlayingView-section {
+  background-color: var(--spice-card);
+}
+
+.gwmgu53xszgwAXxqLT0h {  /* Song name in top-left corner */
+  text-decoration: none !important;
+}
+.gwmgu53xszgwAXxqLT0h:hover {
+  text-decoration: underline !important;
+}
+
+.main-trackInfo-artists a:link {
+  color: var(--spice-text);
+}
+
+.eEiwEPDfVRD0HKjYM_dq button {  /* Switch to video button */
+  background: var(--spice-button-background);
+}
+
+
+/* Lyrics */
+
+.lyrics-lyrics-background {
+  background-color: var(--spice-main);
+}
+
+.lyrics-lyrics-contentContainer .GML6YUVCeJvRhGznLnqm,  /* "Lyrics aren't synced" paragraph */
+.lyrics-lyricsContent-provider {
+  color: var(--spice-subtext);
+}
+
+.lyrics-lyricsContent-lyric {
+  color: var(--spice-text) !important;
+}
+
+.lyrics-lyricsContent-lyric:not(.lyrics-lyricsContent-highlight):not(.lyrics-lyricsContent-active):not(.lyrics-lyricsContent-unsynced) {
+  color: var(--spice-subtext) !important;
+}
+
+
+/* Remove ads */
+
+.upgrade-button, button[data-menu-item="upgrade-account"], button[id="upgradeAccount"] {
+  display: none !important;
+}
+
+.account-info__profile-info-product {
+  text-indent: -9999px;
+  line-height: 0;
+}
+.account-info__profile-info-product:after {
+  content: 'Spotify Premium';
+  text-indent: 0;
+  display: block;
+  line-height: initial;
+}
+
+.utUDWsORU96S7boXm2Aq {
+  display: none;
+}
+
+.main-leaderboardComponent-container{
+  display: none;
+}
+.main-topBar-UpgradeButton {
+  display: none;
+}
