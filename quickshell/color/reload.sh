@@ -1,0 +1,2 @@
+quickshell kill
+quickshell -d
