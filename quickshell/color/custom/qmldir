@@ -1,2 +1,3 @@
 singleton Catppuccin catppuccin.qml
 singleton Dracula dracula.qml
+singleton Everforest everforest.qml

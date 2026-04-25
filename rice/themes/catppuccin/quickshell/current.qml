@@ -4,5 +4,6 @@ import QtQuick
 import "./custom"
 
 Singleton {
-    readonly property var colors: Dracula
+    readonly property var colors: Catppuccin
 }
+
