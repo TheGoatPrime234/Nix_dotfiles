@@ -6,8 +6,8 @@ import "./../color"
 FloatingWindow {
     id: themeswitcher
     visible: false
-    width: 350
-    height: 450
+    implicitWidth: 350
+    implicitHeight: 450
     color: Theme.bg1
 
     ColumnLayout {
