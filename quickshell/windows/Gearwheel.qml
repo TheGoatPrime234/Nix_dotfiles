@@ -19,7 +19,8 @@ PanelWindow {
     property var fullJsonData: null
     property int currentIndex: 0
     property string currentMode: "main" 
-    property int segmentCount: {
+    property int displayCount: 6
+    property int totalItems: {
         if (currentMode === "main") return mainList.length;
         if (currentMode === "theme") return themeList.length;
         return wallpaperList.length;
@@ -82,17 +83,22 @@ PanelWindow {
         height: gearwheel.implicitHeight
         anchors.centerIn: parent
         focus: true
+        
         Keys.onPressed: event => {
-            if (event.key === Qt.Key_K || event.key === Qt.Key_Down) {
-                gearwheel.currentIndex = (gearwheel.currentIndex + 1) % gearwheel.segmentCount;
-                event.accepted = true;
-            } else if (event.key === Qt.Key_J || event.key === Qt.Key_Up) {
-                gearwheel.currentIndex = (gearwheel.currentIndex - 1 + gearwheel.segmentCount) % gearwheel.segmentCount;
-                event.accepted = true;
-            } else if (event.key === Qt.Key_Enter || event.key === Qt.Key_Return) {
-                confirmSelection();
-                event.accepted = true;
-            } else if (event.key === Qt.Key_Q || event.key === Qt.Key_Escape) {
+            // WICHTIG: Wenn die Liste leer ist, crasht Modulo-Mathe. Daher die > 0 Prüfung.
+            if (gearwheel.totalItems > 0) {
+                if (event.key === Qt.Key_K || event.key === Qt.Key_Down) {
+                    gearwheel.currentIndex = (gearwheel.currentIndex + 1) % gearwheel.totalItems;
+                    event.accepted = true;
+                } else if (event.key === Qt.Key_J || event.key === Qt.Key_Up) {
+                    gearwheel.currentIndex = (gearwheel.currentIndex - 1 + gearwheel.totalItems) % gearwheel.totalItems;
+                    event.accepted = true;
+                } else if (event.key === Qt.Key_Enter || event.key === Qt.Key_Return) {
+                    confirmSelection();
+                    event.accepted = true;
+                }
+            }
+            if (event.key === Qt.Key_Q || event.key === Qt.Key_Escape) {
                 if (gearwheel.currentMode !== "main") {
                     gearwheel.currentMode = "main";
                     gearwheel.currentIndex = 0;
@@ -102,20 +108,26 @@ PanelWindow {
                 event.accepted = true;
             }
         }
+        
         MouseArea {
             anchors.centerIn: parent
             width: gearwheel.width
             height: gearwheel.height
             onWheel: {
-                if (wheel.angleDelta.y > 0) {
-                    gearwheel.currentIndex = (gearwheel.currentIndex - 1 + gearwheel.segmentCount) % gearwheel.segmentCount;
-                } else if (wheel.angleDelta.y < 0) {
-                    gearwheel.currentIndex = (gearwheel.currentIndex + 1) % gearwheel.segmentCount;
+                if (gearwheel.totalItems > 0) {
+                    if (wheel.angleDelta.y > 0) {
+                        gearwheel.currentIndex = (gearwheel.currentIndex - 1 + gearwheel.totalItems) % gearwheel.totalItems;
+                    } else if (wheel.angleDelta.y < 0) {
+                        gearwheel.currentIndex = (gearwheel.currentIndex + 1) % gearwheel.totalItems;
+                    }
                 }
             }
         }
+        
         Repeater {
-            model: gearwheel.segmentCount
+            // Das Model ist jetzt fest auf 6 verankert!
+            model: gearwheel.displayCount
+            
             Image {
                 id: lambdaSegment
                 source: "segment_asym.svg"
@@ -123,10 +135,26 @@ PanelWindow {
                 sourceSize.height: height
                 anchors.fill: parent
                 fillMode: Image.PreserveAspectFit
-                rotation: index * (360 / gearwheel.segmentCount)
-                property bool isSelected: index == gearwheel.currentIndex
+                
+                // Rotiert immer in perfekten 60° Schritten, egal wie viele Items es gibt
+                rotation: index * (360 / gearwheel.displayCount)
+                
+                // --- NEUE SEITEN-LOGIK ---
+                // Berechnet, auf welcher "Seite" (0, 1, 2...) wir uns befinden
+                property int currentPage: Math.floor(gearwheel.currentIndex / gearwheel.displayCount)
+                
+                // Welcher echte Index aus der JSON gehört zu diesem speziellen Segment?
+                property int realIndex: (currentPage * gearwheel.displayCount) + index
+                
+                // Existiert dieser Index in unseren Daten, oder ist das Lambda gerade "leer"?
+                property bool isValid: realIndex < gearwheel.totalItems
+                
+                // Ist dieses Lambda gerade angewählt?
+                property bool isSelected: isValid && (realIndex === gearwheel.currentIndex)
  
-                opacity: isSelected ? 1.0 : 0.4
+                // Wenn es keine Daten hat (isValid = false), machen wir es fast unsichtbar (0.05),
+                // so bleibt die Sechseck-Silhouette wie ein Wasserzeichen im Hintergrund erhalten!
+                opacity: isSelected ? 1.0 : (isValid ? 0.4 : 0.05)
                 scale: isSelected ? 1.15 : 1.0
                 
                 Behavior on opacity { NumberAnimation { duration: 100 } }
@@ -135,10 +163,14 @@ PanelWindow {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        gearwheel.currentIndex = index;
-                        confirmSelection();
+                        // Man kann nur auf Lambdas klicken, die auch gültige Daten haben
+                        if (isValid) {
+                            gearwheel.currentIndex = realIndex;
+                            confirmSelection();
+                        }
                     }
                 }
+                
                 Text {
                     font {
                         pixelSize: Theme.t1 * 1.5
@@ -147,12 +179,16 @@ PanelWindow {
                     }
                     anchors.centerIn: parent
                     color: parent.isSelected ? "black" : Theme.trans
+                    
+                    // Text wird nur angezeigt, wenn das Segment auch gültig ist
                     text: {
-                        if (gearwheel.currentMode === "main") return gearwheel.mainList[index];
-                        if (gearwheel.currentMode === "theme") return gearwheel.themeList[index];
-                        return "Wall " + (index + 1);
+                        if (!isValid) return "";
+                        if (gearwheel.currentMode === "main") return gearwheel.mainList[realIndex];
+                        if (gearwheel.currentMode === "theme") return gearwheel.themeList[realIndex];
+                        return "Wall " + (realIndex + 1);
                     }
-                    rotation: -(index * (360 / gearwheel.segmentCount))
+                    
+                    rotation: -(index * (360 / gearwheel.displayCount))
                 }
             }
         }
