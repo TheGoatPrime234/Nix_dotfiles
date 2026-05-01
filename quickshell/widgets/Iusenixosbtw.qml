@@ -34,10 +34,10 @@ Rectangle { // Icon Widget Root
 	}
 	MouseArea {
 	    anchors.fill: parent
-	    onClicked: themeswitcher.visible = !themeswitcher.visible
+	    onClicked: gearwheel.visible = !gearwheel.visible
 	}
-	Themeswitcher {
-	    id: themeswitcher
+	Gearwheel {
+	    id: gearwheel 
 	    visible: false 
 	}
 }
