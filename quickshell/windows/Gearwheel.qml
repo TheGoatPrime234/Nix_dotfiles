@@ -25,6 +25,19 @@ PanelWindow {
         if (currentMode === "theme") return themeList.length;
         return wallpaperList.length;
     }
+    IpcHandler {
+        target: "gearwheel" 
+        function toggle() {
+            if (gearwheel.visible) {
+                gearwheel.visible = false;
+            } else {
+                loadConfig();
+                gearwheel.currentMode = "main";
+                gearwheel.currentIndex = 0;
+                gearwheel.visible = true;
+            }
+        }
+    }
     function loadConfig() {
         var reqLinks = new XMLHttpRequest();
         reqLinks.open("GET", "file:///home/cato/.config/rice/nix-switcher/links.json", false);
@@ -49,16 +62,12 @@ PanelWindow {
     Process {
         id: nixSwitcherProcess
         onExited: {
-            console.log("Speichern erfolgreich - führe jetzt apply aus...");
-            applyProcess.running = true;
-            loadConfig(); 
+            console.log("Beide Rust-Befehle erfolgreich ausgeführt!");
+            loadConfig();
         }
     }
-    Process {
-        id: applyProcess
-        command: ["nix-switcher", "apply"]
-    }
     function confirmSelection() {
+        let bashCommand = "";
         if (currentMode === "main") {
             if (currentIndex === 0) {
                 currentMode = "theme";
@@ -66,21 +75,19 @@ PanelWindow {
                 currentMode = "wallpaper";
             }
             currentIndex = 0;
+            return;
         } else if (currentMode === "theme") {
-            // Theme anwenden
             let selectedTheme = themeList[currentIndex];
-            console.log("Führe aus: nix-switcher settheme " + selectedTheme);
-            nixSwitcherProcess.command = ["nix-switcher", "settheme", selectedTheme];
-            nixSwitcherProcess.running = true;
-            gearwheel.visible = false;
-            currentMode = "main"; 
+            console.log("Führe aus: settheme " + selectedTheme + " + apply");
+            bashCommand = "nix-switcher settheme " + selectedTheme + " && nix-switcher apply";
         } else if (currentMode === "wallpaper") {
-            console.log("Führe aus: nix-switcher setwall " + currentIndex);
-            nixSwitcherProcess.command = ["nix-switcher", "setwall", currentIndex.toString()];
-            nixSwitcherProcess.running = true;
-            gearwheel.visible = false;
-            currentMode = "main";
+            console.log("Führe aus: setwall " + currentIndex + " + apply");
+            bashCommand = "nix-switcher setwall " + currentIndex.toString() + " && nix-switcher apply";
         }
+        nixSwitcherProcess.command = ["bash", "-c", bashCommand];
+        nixSwitcherProcess.running = true;
+        gearwheel.visible = false;
+        currentMode = "main";
     }
     Item {
         id: wheelContainer
@@ -88,9 +95,7 @@ PanelWindow {
         height: gearwheel.implicitHeight
         anchors.centerIn: parent
         focus: true
-        
         Keys.onPressed: event => {
-            // WICHTIG: Wenn die Liste leer ist, crasht Modulo-Mathe. Daher die > 0 Prüfung.
             if (gearwheel.totalItems > 0) {
                 if (event.key === Qt.Key_K || event.key === Qt.Key_Down) {
                     gearwheel.currentIndex = (gearwheel.currentIndex + 1) % gearwheel.totalItems;
@@ -113,7 +118,6 @@ PanelWindow {
                 event.accepted = true;
             }
         }
-        
         MouseArea {
             anchors.centerIn: parent
             width: gearwheel.width
