@@ -48,6 +48,11 @@ PanelWindow {
     color: Theme.trans
     Process {
         id: nixSwitcherProcess
+        onExited: {
+            console.log("Speichern erfolgreich - führe jetzt apply aus...");
+            applyProcess.running = true;
+            loadConfig(); 
+        }
     }
     Process {
         id: applyProcess
@@ -192,12 +197,5 @@ PanelWindow {
                 }
             }
         }
-    }
-    onVisibleChanged: {
-	if (!visible) {
-	    console.log("Rad geschlossen - führe nix-switcher apply aus...");
-	    applyProcess.running = true;
-	    loadConfig(); 
-	}
     }
 }
