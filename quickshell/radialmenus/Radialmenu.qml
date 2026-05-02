@@ -115,12 +115,36 @@ PanelWindow {
                     }; })(idx)
                 }));
             }
-        }
+        },
+	{
+	    label: "Link",
+	    mode:  "link-wall",
+	    load:  function() {
+		gearwheel.pendingLinkWallIndex = -1;
+		var req = new XMLHttpRequest();
+		req.open("GET", "file:///home/cato/.config/rice/nix-switcher/wallpaper.json", false);
+		req.send(null);
+		var walls = [];
+		if (req.status === 200 || req.status === 0)
+		    walls = JSON.parse(req.responseText);
+		gearwheel.dynamicItems = walls.map((path, idx) => ({
+		    label:   "",
+		    preview: "file://" + path,
+		    action:  (function(i) { return function() {
+			gearwheel.pendingLinkWallIndex = i;
+			gearwheel.currentMode  = "link-theme";
+			gearwheel.currentIndex = 0;
+			gearwheel.loadLinkThemes();
+		    }; })(idx)
+		}));
+	    }
+	}
         // ── Add more entries here ──────────────────────────────────────────────
     ]
 
     // Keep fullJsonData cached between loads
     property var fullJsonData: null
+    property int pendingLinkWallIndex: -1
 
     // ── IPC ───────────────────────────────────────────────────────────────────
     IpcHandler {
@@ -169,6 +193,24 @@ PanelWindow {
             currentMode  = "main";
             currentIndex = 0;
         }
+    }
+
+    function loadLinkThemes() {
+	var req = new XMLHttpRequest();
+	req.open("GET", "file:///home/cato/.config/rice/nix-switcher/links.json", false);
+	req.send(null);
+	var themes = [];
+	if (req.status === 200 || req.status === 0)
+	    themes = Object.keys(JSON.parse(req.responseText).theme);
+	gearwheel.dynamicItems = themes.map(name => ({
+	    label:   name,
+	    preview: "",
+	    action:  function() {
+		var cmd = "nix-switcher link " + gearwheel.pendingLinkWallIndex + " " + name + " && echo done";
+		nixSwitcherProcess.command = ["bash", "-c", cmd];
+		nixSwitcherProcess.running = true;
+	    }
+	}));
     }
 
     // ── Visual ────────────────────────────────────────────────────────────────
