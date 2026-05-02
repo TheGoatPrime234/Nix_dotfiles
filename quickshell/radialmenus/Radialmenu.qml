@@ -145,6 +145,7 @@ PanelWindow {
 	    load:  function() {
 	    var cmd = "kitty --class kitty-floating bash -c 'restituo; echo \"\"; read -n 1 -s -r -p \"Rebuild beendet! Drücke eine beliebige Taste...\"'";
             nixSwitcherProcess.command = ["bash", "-c", cmd];
+	    gearwheel.visible = false
             nixSwitcherProcess.running = true;
         }
 	},
