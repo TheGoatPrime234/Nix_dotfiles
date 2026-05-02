@@ -38,6 +38,18 @@ PanelWindow {
             }
         }
     }
+    Process {
+	id: nixSwitcherProcess
+	stdout: SplitParser {
+	    onRead: data => {
+		console.log("Output:", data);
+		if (data.trim() === "done") {
+		    gearwheel.visible = false;
+		    loadConfig();
+		}
+	    }
+	}
+    }
     function loadConfig() {
         var reqLinks = new XMLHttpRequest();
         reqLinks.open("GET", "file:///home/cato/.config/rice/nix-switcher/links.json", false);
@@ -59,35 +71,25 @@ PanelWindow {
     }
     Component.onCompleted: loadConfig()
     color: Theme.trans
-    Process {
-        id: nixSwitcherProcess
-        onExited: {
-            console.log("Beide Rust-Befehle erfolgreich ausgeführt!");
-            loadConfig();
-        }
-    }
     function confirmSelection() {
-        let bashCommand = "";
-        if (currentMode === "main") {
-            if (currentIndex === 0) {
-                currentMode = "theme";
-            } else {
-                currentMode = "wallpaper";
-            }
-            currentIndex = 0;
-            return;
-        } else if (currentMode === "theme") {
-            let selectedTheme = themeList[currentIndex];
-            console.log("Führe aus: settheme " + selectedTheme + " + apply");
-            bashCommand = "nix-switcher settheme " + selectedTheme + " && nix-switcher apply";
-        } else if (currentMode === "wallpaper") {
-            console.log("Führe aus: setwall " + currentIndex + " + apply");
-            bashCommand = "nix-switcher setwall " + currentIndex.toString() + " && nix-switcher apply";
-        }
-        nixSwitcherProcess.command = ["bash", "-c", bashCommand];
-        nixSwitcherProcess.running = true;
-        gearwheel.visible = false;
-        currentMode = "main";
+	let bashCommand = "";
+	if (currentMode === "main") {
+	    if (currentIndex === 0) {
+		currentMode = "theme";
+	    } else {
+		currentMode = "wallpaper";
+	    }
+	    currentIndex = 0;
+	    return;
+	} else if (currentMode === "theme") {
+	    let selectedTheme = themeList[currentIndex];
+	    bashCommand = "nix-switcher settheme " + selectedTheme + " && nix-switcher apply && echo done";
+	} else if (currentMode === "wallpaper") {
+	    bashCommand = "nix-switcher setwall " + currentIndex.toString() + " && nix-switcher apply && echo done";
+	}
+	nixSwitcherProcess.command = ["bash", "-c", bashCommand];
+	nixSwitcherProcess.running = true;
+	currentMode = "main";
     }
     Item {
         id: wheelContainer
