@@ -134,11 +134,8 @@ PanelWindow {
                 }
             }
         }
-        
         Repeater {
-            // Das Model ist jetzt fest auf 6 verankert!
             model: gearwheel.displayCount
-            
             Image {
                 id: lambdaSegment
                 source: "segment_asym.svg"
@@ -146,60 +143,77 @@ PanelWindow {
                 sourceSize.height: height
                 anchors.fill: parent
                 fillMode: Image.PreserveAspectFit
-                
-                // Rotiert immer in perfekten 60° Schritten, egal wie viele Items es gibt
                 rotation: index * (360 / gearwheel.displayCount)
-                
-                // --- NEUE SEITEN-LOGIK ---
-                // Berechnet, auf welcher "Seite" (0, 1, 2...) wir uns befinden
                 property int currentPage: Math.floor(gearwheel.currentIndex / gearwheel.displayCount)
-                
-                // Welcher echte Index aus der JSON gehört zu diesem speziellen Segment?
                 property int realIndex: (currentPage * gearwheel.displayCount) + index
-                
-                // Existiert dieser Index in unseren Daten, oder ist das Lambda gerade "leer"?
                 property bool isValid: realIndex < gearwheel.totalItems
-                
-                // Ist dieses Lambda gerade angewählt?
                 property bool isSelected: isValid && (realIndex === gearwheel.currentIndex)
- 
-                // Wenn es keine Daten hat (isValid = false), machen wir es fast unsichtbar (0.05),
-                // so bleibt die Sechseck-Silhouette wie ein Wasserzeichen im Hintergrund erhalten!
                 opacity: isSelected ? 1.0 : (isValid ? 0.4 : 0.05)
                 scale: isSelected ? 1.15 : 1.0
-                
                 Behavior on opacity { NumberAnimation { duration: 100 } }
                 Behavior on scale { NumberAnimation { duration: 200; easing.type: Easing.OutQuad } }
-                
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        // Man kann nur auf Lambdas klicken, die auch gültige Daten haben
                         if (isValid) {
                             gearwheel.currentIndex = realIndex;
                             confirmSelection();
                         }
                     }
                 }
-                
-                Text {
-                    font {
-                        pixelSize: Theme.t1 * 1.5
-                        bold: true
-                        family: Theme.fnt
-                    }
+                Item {
+                    height: 80
+                    width: (height * 16) / 9
                     anchors.centerIn: parent
-                    color: parent.isSelected ? "black" : Theme.trans
-                    
-                    // Text wird nur angezeigt, wenn das Segment auch gültig ist
-                    text: {
-                        if (!isValid) return "";
-                        if (gearwheel.currentMode === "main") return gearwheel.mainList[realIndex];
-                        if (gearwheel.currentMode === "theme") return gearwheel.themeList[realIndex];
-                        return "Wall " + (realIndex + 1);
-                    }
-                    
                     rotation: -(index * (360 / gearwheel.displayCount))
+                    Rectangle {
+                        anchors.fill: parent
+                        radius: Theme.rad
+                        clip: true      
+                        color: Theme.trans
+                        visible: isValid && gearwheel.currentMode !== "main"
+                        Image {
+                            anchors.fill: parent
+			    opacity: isSelected ? 100 : 0
+                            fillMode: Image.PreserveAspectCrop
+                            asynchronous: true 
+                            source: {
+                                if (!isValid) return "";
+                                if (gearwheel.currentMode === "wallpaper") {
+                                    return "file://" + gearwheel.wallpaperList[realIndex];
+                                } 
+                                else if (gearwheel.currentMode === "theme") {
+                                    let themeName = gearwheel.themeList[realIndex];
+                                    let themeWalls = gearwheel.fullJsonData.theme[themeName].wallpapers;
+                                    if (themeWalls && themeWalls.length > 0) {
+                                        return "";
+                                    }
+                                }
+                                return "";
+                            }
+                        }
+                        Rectangle {
+                            anchors.fill: parent
+                            color: Theme.trans
+                            opacity: gearwheel.currentMode === "theme" ? 0.5 : 0.0 
+                        }
+                    }
+                    Text {
+                        font {
+                            pixelSize: Theme.t1 * (gearwheel.currentMode === "main" ? 1.5 : 1.2)
+                            bold: true
+                            family: Theme.fnt
+                        }
+                        anchors.centerIn: parent
+                        color: isSelected ? Theme.ac1 : Theme.trans
+                        visible: gearwheel.currentMode !== "wallpaper"
+                        text: {
+                            if (!isValid) return "";
+                            if (gearwheel.currentMode === "main") return gearwheel.mainList[realIndex];
+                            if (gearwheel.currentMode === "theme") return gearwheel.themeList[realIndex];
+                            return "";
+                        }
+                    }
                 }
             }
         }
