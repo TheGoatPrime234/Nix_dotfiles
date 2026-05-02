@@ -186,6 +186,10 @@ PanelWindow {
             currentIndex = 0;
             dynamicItems = [];
             entry.load();
+        } else if (currentMode === "link-wall") {
+            // Action setzt currentMode selbst auf "link-theme" – nicht überschreiben
+            var item = activeList[currentIndex];
+            if (item && item.action) item.action();
         } else {
             // Execute the item's action
             var item = activeList[currentIndex];
