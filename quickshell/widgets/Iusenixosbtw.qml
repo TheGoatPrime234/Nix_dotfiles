@@ -10,6 +10,7 @@ import Quickshell.Services.UPower
 import Quickshell.Services.Notifications
 import "./../color"
 import "./../windows"
+import "./../radialmenus"
 
 Rectangle { // Icon Widget Root
 	id: iuseNixosbtw
@@ -36,7 +37,7 @@ Rectangle { // Icon Widget Root
 	    anchors.fill: parent
 	    onClicked: gearwheel.visible = !gearwheel.visible
 	}
-	Gearwheel {
+	Radialmenu {
 	    id: gearwheel 
 	    visible: false 
 	}
