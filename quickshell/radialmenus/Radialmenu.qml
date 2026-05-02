@@ -142,10 +142,11 @@ PanelWindow {
 	{
 	    label: "Rebuild",
 	    mode: "rebuild",
-            load:  function() {
-		nixSwitcherProcess.command = ["bash","-c","kitty restituo"];
-		nixSwitcherProcess.running = true;
-	    },
+	    load:  function() {
+            var cmd = "kitty bash -c 'restituo; echo \"\"; read -n 1 -s -r -p \"Rebuild beendet! Drücke eine beliebige Taste zum Schließen...\"'";
+            nixSwitcherProcess.command = ["bash", "-c", cmd];
+            nixSwitcherProcess.running = true;
+        }
 	},
         // ── Add more entries here ──────────────────────────────────────────────
     ]
