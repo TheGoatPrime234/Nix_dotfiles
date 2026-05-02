@@ -45,12 +45,13 @@
     {
       "type": "wm",
       "key": "├╴ WM       │",
-      "keyColor": "green",
+      "keyColor": "green"
     },
     {
       "type": "packages",
       "key": "├╴󰏖 Packages │",
-      "keyColor": "green"
+      "keyColor": "green",
+      "format": "OS: {39} / Flatpack: {40}",
     },
     {
       "type": "uptime",
@@ -106,13 +107,14 @@
     {
       "type": "memory",
       "key": "├╴ RAM      │",
-      "keyColor": "red"
+      "keyColor": "red",
+      "format": "{1} / {2} ({3})"
     },
     {
       "type": "disk",
       "key": "├╴ Disk     │",
       "keyColor": "red",
-      "format": "{13} {1} / {2} ({3})"
+      "format": "{1} / {2} ({3})"
     },
     {
       "type": "battery",
