@@ -138,7 +138,15 @@ PanelWindow {
 		    }; })(idx)
 		}));
 	    }
-	}
+	},
+	{
+	    label: "Rebuild",
+	    mode: "rebuild",
+            load:  function() {
+		nixSwitcherProcess.command = ["bash","-c","kitty restituo"];
+		nixSwitcherProcess.running = true;
+	    },
+	},
         // ── Add more entries here ──────────────────────────────────────────────
     ]
 
