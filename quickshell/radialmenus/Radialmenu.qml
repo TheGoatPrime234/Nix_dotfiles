@@ -39,7 +39,7 @@ import "./../color"
 PanelWindow {
     id: gearwheel
     visible: false
-    implicitWidth: 700
+    implicitWidth: 960
     implicitHeight: 600
     WlrLayershell.layer: WlrLayer.Overlay
     aboveWindows: true
