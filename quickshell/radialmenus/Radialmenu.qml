@@ -265,76 +265,84 @@ PanelWindow {
                 }
             }
         }
+	Repeater {
+		    model: gearwheel.displayCount
+		    Image {
+			id: lambdaSegment
+			source: "segment_asym.svg"
+			sourceSize.width:  width
+			sourceSize.height: height
+			anchors.fill: parent
+			fillMode: Image.PreserveAspectFit
+			rotation: index * (360 / gearwheel.displayCount)
 
-        Repeater {
-            model: gearwheel.displayCount
-            Image {
-                id: lambdaSegment
-                source: "segment_asym.svg"
-                sourceSize.width:  width
-                sourceSize.height: height
-                anchors.fill: parent
-                fillMode: Image.PreserveAspectFit
-                rotation: index * (360 / gearwheel.displayCount)
+			property int  currentPage: Math.floor(gearwheel.currentIndex / gearwheel.displayCount)
+			property int  realIndex:   (currentPage * gearwheel.displayCount) + index
+			property bool isValid:     realIndex < gearwheel.totalItems
+			property bool isSelected:  isValid && (realIndex === gearwheel.currentIndex)
+			
+			property var  activeItem:  isValid ? gearwheel.activeList[realIndex] : null
 
-                property int  currentPage: Math.floor(gearwheel.currentIndex / gearwheel.displayCount)
-                property int  realIndex:   (currentPage * gearwheel.displayCount) + index
-                property bool isValid:     realIndex < gearwheel.totalItems
-                property bool isSelected:  isValid && (realIndex === gearwheel.currentIndex)
-                property var  activeItem:  isValid ? gearwheel.activeList[realIndex] : null
+			opacity: isSelected ? 1.0 : (isValid ? 0.4 : 0.05)
+			scale:   isSelected ? 1.15 : 1.0
+			Behavior on opacity { NumberAnimation { duration: 100 } }
+			Behavior on scale   { NumberAnimation { duration: 200; easing.type: Easing.OutQuad } }
 
-                opacity: isSelected ? 1.0 : (isValid ? 0.4 : 0.05)
-                scale:   isSelected ? 1.15 : 1.0
-                Behavior on opacity { NumberAnimation { duration: 100 } }
-                Behavior on scale   { NumberAnimation { duration: 200; easing.type: Easing.OutQuad } }
+			MouseArea {
+			    anchors.fill: parent
+			    onClicked: {
+				if (isValid) {
+				    gearwheel.currentIndex = realIndex;
+				    confirmSelection();
+				}
+			    }
+			}
 
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        if (isValid) {
-                            gearwheel.currentIndex = realIndex;
-                            confirmSelection();
-                        }
-                    }
-                }
+			Item {
+			    height: 80
+			    width:  (height * 16) / 9
+			    anchors.centerIn: parent
+			    rotation: -(index * (360 / gearwheel.displayCount))
 
-                Item {
-                    height: 80
-                    width:  (height * 16) / 9
-                    anchors.centerIn: parent
-                    rotation: -(index * (360 / gearwheel.displayCount))
+			    // Preview image (wallpapers / anything with a preview path)
+			    Rectangle {
+				anchors.fill: parent
+				radius: Theme.rad
+				clip:   true
+				color:  Theme.trans
+				visible: isValid && activeItem && activeItem.preview !== ""
 
-                    // Preview image (wallpapers / anything with a preview path)
-                    Rectangle {
-                        anchors.fill: parent
-                        radius: Theme.rad
-                        clip:   true
-                        color:  Theme.trans
-                        visible: isValid && activeItem && activeItem.preview !== ""
+				Image {
+				    anchors.fill: parent
+				    opacity:      isSelected ? 1.0 : 0.0
+				    fillMode:     Image.PreserveAspectCrop
+				    asynchronous: true
+				    
+				    // --- VRAM & Performance Fix ---
+				    // Skaliert die 4K/8K Wallhaven Bilder sofort beim Laden herunter
+				    sourceSize.width: 150
+				    sourceSize.height: 150
+				    
+				    // --- Sonderzeichen Fix ---
+				    // encodeURI fixt Leerzeichen und Klammern in den Dateinamen
+				    source:       (activeItem && activeItem.preview) ? encodeURI(activeItem.preview) : ""
+				}
+			    }
 
-                        Image {
-                            anchors.fill: parent
-                            opacity:      isSelected ? 1.0 : 0.0
-                            fillMode:     Image.PreserveAspectCrop
-                            asynchronous: true
-                            source:       (activeItem && activeItem.preview) ? activeItem.preview : ""
-                        }
-                    }
-
-                    // Label text (main menu + any sub-menu entry that has a label)
-                    Text {
-                        font {
-                            pixelSize: Theme.t1 * (gearwheel.currentMode === "main" ? 1.5 : 1.2)
-                            bold:      true
-                            family:    Theme.fnt
-                        }
-                        anchors.centerIn: parent
-                        color:   isSelected ? Theme.ac1 : Theme.trans
-                        visible: isValid && activeItem && activeItem.label !== ""
-                        text:    (activeItem && activeItem.label) ? activeItem.label : ""
-                    }
-                }
-            }
-        }
-    }
+			    // Label text (main menu + any sub-menu entry that has a label)
+			    Text {
+				font {
+				    pixelSize: Theme.t1 * (gearwheel.currentMode === "main" ? 1.5 : 1.2)
+				    bold:      true
+				    family:    Theme.fnt
+				}
+				anchors.centerIn: parent
+				color:   isSelected ? Theme.ac1 : Theme.trans
+				visible: isValid && activeItem && activeItem.label !== ""
+				text:    (activeItem && activeItem.label) ? activeItem.label : ""
+			    }
+			}
+		    }
+		}
+	    } // Ende von: Item { id: wheelContainer }
 }
