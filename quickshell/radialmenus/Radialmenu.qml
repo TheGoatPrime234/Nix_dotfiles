@@ -143,7 +143,7 @@ PanelWindow {
 	    label: "Rebuild",
 	    mode: "rebuild",
 	    load:  function() {
-            var cmd = "kitty bash -c 'restituo; echo \"\"; read -n 1 -s -r -p \"Rebuild beendet! Drücke eine beliebige Taste zum Schließen...\"'";
+	    var cmd = "kitty --class kitty-floating bash -c 'restituo; echo \"\"; read -n 1 -s -r -p \"Rebuild beendet! Drücke eine beliebige Taste...\"'";
             nixSwitcherProcess.command = ["bash", "-c", cmd];
             nixSwitcherProcess.running = true;
         }
@@ -187,27 +187,26 @@ PanelWindow {
 
     // ── Confirm / navigate ────────────────────────────────────────────────────
     function confirmSelection() {
-        if (currentMode === "main") {
-            // Open the selected entry's sub-menu
-            var entry = menuEntries[currentIndex];
-            if (!entry) return;
-            currentMode  = entry.mode;
-            currentIndex = 0;
-            dynamicItems = [];
-            entry.load();
-        } else if (currentMode === "link-wall") {
-            // Action setzt currentMode selbst auf "link-theme" – nicht überschreiben
-            var item = activeList[currentIndex];
-            if (item && item.action) item.action();
-        } else {
-            // Execute the item's action
-            var item = activeList[currentIndex];
-            if (item && item.action) item.action();
-            currentMode  = "main";
-            currentIndex = 0;
-        }
+	if (currentMode === "main") {
+	    var entry = menuEntries[currentIndex];
+	    if (!entry) return;
+	    currentMode  = entry.mode;
+	    currentIndex = 0;
+	    dynamicItems = [];
+	    entry.load();
+	} else if (currentMode === "link-wall") {
+	    var item = activeList[currentIndex];
+	    if (item && item.action) item.action();
+	} else {
+	    // --- HIER DIE FIXES ---
+	    var item = activeList[currentIndex];
+	    if (item && item.action) item.action();
+	    
+	    gearwheel.visible = false; // Schließt das Menü nach der Auswahl [cite: 92]
+	    currentMode  = "main";      // Setzt den Modus für das nächste Mal zurück [cite: 92]
+	    currentIndex = 0;           // Setzt den Index zurück [cite: 93]
+	}
     }
-
     function loadLinkThemes() {
 	var req = new XMLHttpRequest();
 	req.open("GET", "file:///home/cato/.config/rice/nix-switcher/links.json", false);
