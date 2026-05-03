@@ -57,40 +57,27 @@ PanelWindow {
     WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
 
     property int displayCount: 6
-
-    // ── Navigations-Stack ─────────────────────────────────────────────────────
-    // Jede Ebene: { title: string, items: [...], selectedIndex: int }
     property var navStack: []
-
-    // Eigener Index für das Hauptmenü
     property int mainIndex: 0
-
-    // Aktuelle Ebene
     property var currentLevel: navStack.length > 0 ? navStack[navStack.length - 1] : null
     property var activeList:   currentLevel ? currentLevel.items : menuEntries.map(e => ({ label: e.label, preview: "", children: null, action: null }))
     property int currentIndex: currentLevel ? currentLevel.selectedIndex : mainIndex
     property int totalItems:   activeList.length
     property bool onMain:      navStack.length === 0
-
-    // Index-Setter: Hauptmenü → mainIndex, Untermenü → Stack
     function setIndex(i) {
         if (navStack.length === 0) {
             mainIndex = i;
         } else {
-            var stack = navStack.slice();
-            stack[stack.length - 1].selectedIndex = i;
-            navStack = stack;
+            var last = navStack[navStack.length - 1];
+            var newLevel = { title: last.title, items: last.items, selectedIndex: i };
+            navStack = navStack.slice(0, navStack.length - 1).concat([newLevel]);
         }
     }
-
-    // Eine Ebene tiefer gehen
     function pushLevel(title, items) {
         var stack = navStack.slice();
         stack.push({ title: title, items: items, selectedIndex: 0 });
         navStack = stack;
     }
-
-    // Eine Ebene zurück (ESC)
     function popLevel() {
         if (navStack.length === 0) {
             gearwheel.visible = false;
@@ -100,18 +87,13 @@ PanelWindow {
         stack.pop();
         navStack = stack;
     }
-
-    // Bestätigen
     function confirmSelection() {
         var item = activeList[currentIndex];
         if (!item) return;
-
         if (onMain) {
-            // Hauptmenü → entry.load() aufrufen
             var entry = menuEntries[currentIndex];
             if (entry && entry.load) entry.load();
         } else if (item.children) {
-            // Untermenü mit weiteren Kindern → eine Stufe tiefer
             pushLevel(item.label, item.children);
         } else if (item.action) {
             // Blatt-Aktion ausführen
@@ -218,7 +200,7 @@ PanelWindow {
                     walls = JSON.parse(req.responseText);
 
                 var items = walls.map((path, idx) => ({
-                    label:   path.split("/").pop(),
+                    label:   "",
                     preview: "file://" + path,
                     // children werden dynamisch beim Öffnen erzeugt
                     children: (function(wallIdx) {
@@ -268,11 +250,7 @@ PanelWindow {
                 ]);
             }
         }
-
-        // ── Weitere Einträge hier einfügen ────────────────────────────────────
     ]
-
-    // ── IPC ───────────────────────────────────────────────────────────────────
     IpcHandler {
         target: "gearwheel"
         function toggle() {
@@ -286,8 +264,6 @@ PanelWindow {
             }
         }
     }
-
-    // ── Process runner ────────────────────────────────────────────────────────
     Process {
         id: nixSwitcherProcess
         stdout: SplitParser {
@@ -300,17 +276,13 @@ PanelWindow {
             }
         }
     }
-
-    // ── Visual ────────────────────────────────────────────────────────────────
     color: Theme.trans
-
     Item {
         id: wheelContainer
         width:  gearwheel.implicitWidth
         height: gearwheel.implicitHeight
         anchors.centerIn: parent
         focus: true
-
         Keys.onPressed: event => {
             if (gearwheel.totalItems > 0) {
                 if (event.key === Qt.Key_K || event.key === Qt.Key_Tab || event.key === Qt.Key_Down) {
@@ -329,7 +301,6 @@ PanelWindow {
                 event.accepted = true;
             }
         }
-
         MouseArea {
             anchors.centerIn: parent
             width:  gearwheel.width
@@ -343,7 +314,6 @@ PanelWindow {
                 }
             }
         }
-
         Repeater {
             model: gearwheel.displayCount
 
