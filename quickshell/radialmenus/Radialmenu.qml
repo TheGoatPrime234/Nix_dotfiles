@@ -108,13 +108,15 @@ PanelWindow {
     function confirmSelection() {
         var item = activeList[currentIndex];
         if (!item) return;
-
         if (onMain) {
             var entry = menuEntries[currentIndex];
             if (entry && entry.load) entry.load();
         } else if (item.children) {
-            var childItems = typeof item.children === "function" ? item.children() : item.children;
+            var childItems = typeof item.children === "function" ?
+                item.children() : item.children;
             pushLevel(item.label, childItems);
+        } else if (item.load) {
+            item.load();
         } else if (item.action) {
             item.action();
             gearwheel.visible = false;
@@ -143,110 +145,144 @@ PanelWindow {
                 ]);
             }
         },
-        {
-            label: "Themes",
-            load: function() {
-                var req = new XMLHttpRequest();
-                req.open("GET", "file:///home/cato/.config/rice/nix-switcher/links.json", false);
-                req.send(null);
-                if (req.status === 200 || req.status === 0) {
-		    try {
-			var json = JSON.parse(req.responseText);
-			gearwheel.fullJsonData = json;
-			var items = Object.keys(json.theme).map(name => ({
-			    label:   name,
-			    preview: "",
-			    action:  function() {
-				var cmd = "nix-switcher settheme " + name + " && nix-switcher apply && echo done";
-				nixSwitcherProcess.command = ["bash", "-c", cmd];
-				nixSwitcherProcess.running = true;
-			    }
-			}));
-			gearwheel.pushLevel("Themes", items);
-		    } catch (e) {
-			console.log("Fehler beim lesen der json Datei:", e);
-		    }
-                }
-            }
-        },
-        {
-            label: "Wallpaper",
-            load: function() {
-                var json = gearwheel.fullJsonData;
-                if (!json) {
-                    var req = new XMLHttpRequest();
-                    req.open("GET", "file:///home/cato/.config/rice/nix-switcher/links.json", false);
-                    req.send(null);
-		    if (req.status === 200 || req.status === 0) {
-			try {
-			    json = JSON.parse(req.responseText);
-			    gearwheel.fullJsonData = json;
-			} catch (e) {
-			    console.log("Fehler beim lesen der json Datei:", e);
-			}
-		    }
-                }
-                var cfgReq = new XMLHttpRequest();
-                cfgReq.open("GET", "file:///home/cato/.config/rice/nix-switcher/config.json", false);
-                cfgReq.send(null);
-                var walls = [];
-                if ((cfgReq.status === 200 || cfgReq.status === 0) && json) {
-		    try {
-			var active = JSON.parse(cfgReq.responseText).theme;
-			walls = json.theme[active] ? json.theme[active].wallpapers : [];
-		    } catch (e) {
-			console.log("Fehler beim lesen der json Datei:", e);
-		    }
-                }
-                var items = walls.map((path, idx) => ({
-                    label:   "",
-                    preview: "file://" + path,
-		    action: function() {
-			var cmd = "nix-switcher setwall " + idx + " && nix-switcher apply && echo done";
-			nixSwitcherProcess.command = ["bash", "-c", cmd];
-			nixSwitcherProcess.running = true;
-		    }
-                }));
-                gearwheel.pushLevel("Wallpaper", items);
-            }
-        },
 	{
-            label: "Link",
-            load: function() {
-                var req = new XMLHttpRequest();
-                req.open("GET", "file:///home/cato/.config/rice/nix-switcher/wallpaper.json", false);
-                req.send(null);
-                var walls = [];
-                if (req.status === 200 || req.status === 0) {
-                    try { walls = JSON.parse(req.responseText); } 
-                    catch(e) { console.log("Fehler beim Lesen der wallpaper.json:", e); }
-                }
-                var items = walls.map((path, idx) => ({
-                    label:   "",
-                    preview: "file://" + path,
-                    children: function() {
-                        var themeReq = new XMLHttpRequest();
-                        themeReq.open("GET", "file:///home/cato/.config/rice/nix-switcher/links.json", false);
-                        themeReq.send(null);
-                        var themes = [];
-                        if (themeReq.status === 200 || themeReq.status === 0) {
-                            try { themes = Object.keys(JSON.parse(themeReq.responseText).theme); } 
-                            catch(e) { console.log("Fehler beim Lesen der links.json:", e); }
-                        }
-                        return themes.map(name => ({
-                            label:   name,
-                            preview: "",
-                            action:  function() {
-                                var cmd = "nix-switcher link " + idx + " " + name + " && echo done";
-                                nixSwitcherProcess.command = ["bash", "-c", cmd];
-                                nixSwitcherProcess.running = true;
-                            }
-                        }));
-                    }
-                }));
-                gearwheel.pushLevel("Link › Wallpaper", items);
-            }
-        },
+	    label: "Rice",
+	    load: function() {
+		gearwheel.pushLevel("Rice", [
+		    {
+			label: "Themes",
+			load: function() {
+			    var req = new XMLHttpRequest();
+			    req.open("GET", "file:///home/cato/.config/rice/nix-switcher/links.json", false);
+			    req.send(null);
+			    if (req.status === 200 || req.status === 0) {
+				try {
+				    var json = JSON.parse(req.responseText);
+				    gearwheel.fullJsonData = json;
+				    var items = Object.keys(json.theme).map(name => ({
+					label:   name,
+					preview: "",
+					action:  function() {
+					    var cmd = "nix-switcher settheme " + name + " && nix-switcher apply && echo done";
+					    nixSwitcherProcess.command = ["bash", "-c", cmd];
+					    nixSwitcherProcess.running = true;
+					}
+				    }));
+				    gearwheel.pushLevel("Themes", items);
+				} catch (e) {
+				    console.log("Fehler beim lesen der json Datei:", e);
+				}
+			    }
+			}
+		    },
+		    {
+			label: "Wallpaper",
+			load: function() {
+			    var json = gearwheel.fullJsonData;
+			    if (!json) {
+				var req = new XMLHttpRequest();
+				req.open("GET", "file:///home/cato/.config/rice/nix-switcher/links.json", false);
+				req.send(null);
+				if (req.status === 200 || req.status === 0) {
+				    try {
+					json = JSON.parse(req.responseText);
+					gearwheel.fullJsonData = json;
+				    } catch (e) {
+					console.log("Fehler beim lesen der json Datei:", e);
+				    }
+				}
+			    }
+			    var cfgReq = new XMLHttpRequest();
+			    cfgReq.open("GET", "file:///home/cato/.config/rice/nix-switcher/config.json", false);
+			    cfgReq.send(null);
+			    var walls = [];
+			    if ((cfgReq.status === 200 || cfgReq.status === 0) && json) {
+				try {
+				    var active = JSON.parse(cfgReq.responseText).theme;
+				    walls = json.theme[active] ? json.theme[active].wallpapers : [];
+				} catch (e) {
+				    console.log("Fehler beim lesen der json Datei:", e);
+				}
+			    }
+			    var items = walls.map((path, idx) => ({
+				label:   "",
+				preview: "file://" + path,
+				action: function() {
+				    var cmd = "nix-switcher setwall " + idx + " && nix-switcher apply";
+				    nixSwitcherProcess.command = ["bash", "-c", cmd];
+				    nixSwitcherProcess.running = true;
+				}
+			    }));
+			    gearwheel.pushLevel("Wallpaper", items);
+			}
+		    },
+		    {
+			label: "Link",
+			load: function() {
+			    var req = new XMLHttpRequest();
+			    req.open("GET", "file:///home/cato/.config/rice/nix-switcher/wallpaper.json", false);
+			    req.send(null);
+			    var walls = [];
+			    if (req.status === 200 || req.status === 0) {
+				try { walls = JSON.parse(req.responseText); } 
+				catch(e) { console.log("Fehler beim Lesen der wallpaper.json:", e); }
+			    }
+			    var items = walls.map((path, idx) => ({
+				label:   "",
+				preview: "file://" + path,
+				children: function() {
+				    var themeReq = new XMLHttpRequest();
+				    themeReq.open("GET", "file:///home/cato/.config/rice/nix-switcher/links.json", false);
+				    themeReq.send(null);
+				    var themes = [];
+				    if (themeReq.status === 200 || themeReq.status === 0) {
+					try { themes = Object.keys(JSON.parse(themeReq.responseText).theme); } 
+					catch(e) { console.log("Fehler beim Lesen der links.json:", e); }
+				    }
+				    return themes.map(name => ({
+					label:   name,
+					preview: "",
+					action:  function() {
+					    var cmd = "nix-switcher link " + idx + " " + name + " && echo done";
+					    nixSwitcherProcess.command = ["bash", "-c", cmd];
+					    nixSwitcherProcess.running = true;
+					}
+				    }));
+				}
+			    }));
+			    gearwheel.pushLevel("Link › Wallpaper", items);
+			}
+		    },
+		    {
+			label: "Kittytheme",
+			load: function() {
+			    var req = new XMLHttpRequest();
+			    req.open("GET", "file:///home/cato/.config/rice/nix-switcher/kittythemes.json", false);
+			    req.send(null);
+			    var themes = [];
+			    if (req.status === 200 || req.status === 0) {
+				try { 
+				    themes = JSON.parse(req.responseText);
+				} catch(e) { 
+				    console.log("Fehler beim Lesen der kittythemes.json", e); 
+				}
+			    }
+			    
+			    var items = themes.map((themename, idx) => ({
+				label: themename,
+				preview: "",
+				action: function() {
+				    var cmd = "nix-switcher setkitty " + themename + " && nix-switcher apply";
+				    nixSwitcherProcess.command = ["bash", "-c", cmd];
+				    nixSwitcherProcess.running = true;
+				}
+			    }));
+			    gearwheel.pushLevel("Kittytheme", items);
+			}
+		    },
+		]);
+	    }
+	},
         {
             label: "Rebuild",
             load: function() {
