@@ -264,8 +264,8 @@ PanelWindow {
                     { label: "Hibernate", preview: "", action: function() { nixSwitcherProcess.command = ["bash","-c","systemctl hibernate"];      nixSwitcherProcess.running = true; } },
                     { label: "Shutdown",  preview: "", action: function() { nixSwitcherProcess.command = ["bash","-c","systemctl poweroff"];       nixSwitcherProcess.running = true; } },
                     { label: "Reboot",    preview: "", action: function() { nixSwitcherProcess.command = ["bash","-c","systemctl reboot"];         nixSwitcherProcess.running = true; } },
-                    { label: "Lock",      preview: "", action: function() { nixSwitcherProcess.command = ["bash","-c","hyprlock"];                 nixSwitcherProcess.running = true; } },
-                    { label: "Logout",    preview: "", action: function() { nixSwitcherProcess.command = ["bash","-c","hyprctl dispatch exit"];    nixSwitcherProcess.running = true; } }
+                    { label: "Logout",    preview: "", action: function() { nixSwitcherProcess.command = ["bash","-c","hyprctl dispatch exit"];    nixSwitcherProcess.running = true; } },
+                    { label: "Lock",      preview: "", action: function() { nixSwitcherProcess.command = ["bash","-c","hyprlock"];                 nixSwitcherProcess.running = true; } }
                 ]);
             }
         }
