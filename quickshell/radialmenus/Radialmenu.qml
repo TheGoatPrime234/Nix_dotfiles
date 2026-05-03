@@ -65,6 +65,27 @@ PanelWindow {
     property int currentIndex: currentLevel ? currentLevel.selectedIndex : mainIndex
     property int totalItems:   activeList.length
     property bool onMain:      navStack.length === 0
+    property int startupVisibleSegments: 0 
+    Timer {
+        id: startupTimer
+        interval: 40 
+        repeat: true
+        onTriggered: {
+            if (gearwheel.startupVisibleSegments < gearwheel.displayCount) {
+                gearwheel.startupVisibleSegments += 1;
+            } else {
+                stop(); 
+            }
+        }
+    }
+    onVisibleChanged: {
+        if (visible) {
+            startupTimer.start();
+        } else {
+            startupTimer.stop();
+            startupVisibleSegments = 0;
+        }
+    }
     function setIndex(i) {
         if (navStack.length === 0) {
             mainIndex = i;
@@ -74,11 +95,9 @@ PanelWindow {
             navStack = [...navStack.slice(0, -1), newLevel];
         }
     }
-
     function pushLevel(title, items) {
         navStack = [...navStack, { title: title, items: items, selectedIndex: 0 }];
     }
-
     function popLevel() {
         if (navStack.length === 0) {
             gearwheel.visible = false;
@@ -327,9 +346,9 @@ PanelWindow {
                 property int  realIndex:   (currentPage * gearwheel.displayCount) + index
                 property bool isValid:     realIndex < gearwheel.totalItems
                 property bool isSelected:  isValid && (realIndex === gearwheel.currentIndex)
-                property var  activeItem:  isValid ? gearwheel.activeList[realIndex] : null
-                opacity: isSelected ? 1.0 : (isValid ? 0.4 : 0.05)
-                scale:   isSelected ? 1.15 : 1.0
+		property var  activeItem:  isValid ? gearwheel.activeList[realIndex] : null
+                opacity: (index < gearwheel.startupVisibleSegments) ? (isSelected ? 1.0 : (isValid ? 0.4 : 0.05)) : 0.0
+                scale:   (index < gearwheel.startupVisibleSegments) ? (isSelected ? 1.15 : 1.0) : 0.8
                 Behavior on opacity { NumberAnimation { duration: 100 } }
                 Behavior on scale   { NumberAnimation { duration: 200; easing.type: Easing.OutQuad } }
                 MouseArea {
