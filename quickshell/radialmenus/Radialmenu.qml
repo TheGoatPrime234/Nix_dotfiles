@@ -100,13 +100,8 @@ PanelWindow {
             item.action();
         }
     }
-
-    // ── Cached data ───────────────────────────────────────────────────────────
     property var fullJsonData: null
-
-    // ── Menu entry definitions ────────────────────────────────────────────────
     property var menuEntries: [
-        // ── Quick Set (3-stufig) ──────────────────────────────────────────────
         {
             label: "Quick Set",
             load: function() {
@@ -123,15 +118,11 @@ PanelWindow {
                                     nixSwitcherProcess.running = true;
                                 }
                             }
-                            // Weitere RAM-Modi hier einfügen
                         ]
                     }
-                    // Weitere Kategorien hier einfügen
                 ]);
             }
         },
-
-        // ── Themes ───────────────────────────────────────────────────────────
         {
             label: "Themes",
             load: function() {
@@ -154,8 +145,6 @@ PanelWindow {
                 }
             }
         },
-
-        // ── Wallpaper ─────────────────────────────────────────────────────────
         {
             label: "Wallpaper",
             load: function() {
@@ -187,8 +176,6 @@ PanelWindow {
                 gearwheel.pushLevel("Wallpaper", items);
             }
         },
-
-        // ── Link (Wallpaper → Theme, 2 Stufen über Stack) ────────────────────
         {
             label: "Link",
             load: function() {
@@ -224,8 +211,6 @@ PanelWindow {
                 gearwheel.pushLevel("Link › Wallpaper", items);
             }
         },
-
-        // ── Rebuild ───────────────────────────────────────────────────────────
         {
             label: "Rebuild",
             load: function() {
@@ -235,8 +220,6 @@ PanelWindow {
                 nixSwitcherProcess.running = true;
             }
         },
-
-        // ── Shutdown / Session ────────────────────────────────────────────────
         {
             label: "Shutdown",
             load: function() {
@@ -297,7 +280,7 @@ PanelWindow {
                 }
             }
             if (event.key === Qt.Key_Q || event.key === Qt.Key_Backspace || event.key === Qt.Key_Escape) {
-                gearwheel.popLevel();   // immer nur eine Stufe zurück
+                gearwheel.popLevel();   
                 event.accepted = true;
             }
         }
@@ -316,7 +299,6 @@ PanelWindow {
         }
         Repeater {
             model: gearwheel.displayCount
-
             Image {
                 id: lambdaSegment
                 source: "segment_asym.svg"
@@ -325,18 +307,15 @@ PanelWindow {
                 anchors.fill: parent
                 fillMode: Image.PreserveAspectFit
                 rotation: index * (360 / gearwheel.displayCount)
-
                 property int  currentPage: Math.floor(gearwheel.currentIndex / gearwheel.displayCount)
                 property int  realIndex:   (currentPage * gearwheel.displayCount) + index
                 property bool isValid:     realIndex < gearwheel.totalItems
                 property bool isSelected:  isValid && (realIndex === gearwheel.currentIndex)
                 property var  activeItem:  isValid ? gearwheel.activeList[realIndex] : null
-
                 opacity: isSelected ? 1.0 : (isValid ? 0.4 : 0.05)
                 scale:   isSelected ? 1.15 : 1.0
                 Behavior on opacity { NumberAnimation { duration: 100 } }
                 Behavior on scale   { NumberAnimation { duration: 200; easing.type: Easing.OutQuad } }
-
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
@@ -346,20 +325,17 @@ PanelWindow {
                         }
                     }
                 }
-
                 Item {
                     height: 80
                     width:  (height * 16) / 9
                     anchors.centerIn: parent
                     rotation: -(index * (360 / gearwheel.displayCount))
-
                     Rectangle {
                         anchors.fill: parent
                         radius: Theme.rad
                         clip:   true
                         color:  Theme.trans
                         visible: isValid && activeItem && activeItem.preview !== ""
-
                         Image {
                             anchors.fill: parent
                             opacity:      isSelected ? 1.0 : 0.0
@@ -370,7 +346,6 @@ PanelWindow {
                             source: (activeItem && activeItem.preview) ? encodeURI(activeItem.preview) : ""
                         }
                     }
-
                     Text {
                         font {
                             pixelSize: Theme.t1 * (gearwheel.onMain ? 1.5 : 1.2)
@@ -385,8 +360,6 @@ PanelWindow {
                 }
             }
         }
-
-        // ── Breadcrumb ────────────────────────────────────────────────────────
         Text {
             anchors {
                 bottom: parent.bottom
@@ -402,5 +375,5 @@ PanelWindow {
             }
         }
 
-    } // Ende von: Item { id: wheelContainer }
+    } 
 }
