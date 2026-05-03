@@ -62,16 +62,21 @@ PanelWindow {
     // Jede Ebene: { title: string, items: [...], selectedIndex: int }
     property var navStack: []
 
+    // Eigener Index für das Hauptmenü
+    property int mainIndex: 0
+
     // Aktuelle Ebene
     property var currentLevel: navStack.length > 0 ? navStack[navStack.length - 1] : null
     property var activeList:   currentLevel ? currentLevel.items : menuEntries.map(e => ({ label: e.label, preview: "", children: null, action: null }))
-    property int currentIndex: currentLevel ? currentLevel.selectedIndex : 0
+    property int currentIndex: currentLevel ? currentLevel.selectedIndex : mainIndex
     property int totalItems:   activeList.length
     property bool onMain:      navStack.length === 0
 
-    // Index-Setter der den Stack aktuell hält
+    // Index-Setter: Hauptmenü → mainIndex, Untermenü → Stack
     function setIndex(i) {
-        if (currentLevel) {
+        if (navStack.length === 0) {
+            mainIndex = i;
+        } else {
             var stack = navStack.slice();
             stack[stack.length - 1].selectedIndex = i;
             navStack = stack;
@@ -274,7 +279,8 @@ PanelWindow {
             if (gearwheel.visible) {
                 gearwheel.visible = false;
             } else {
-                gearwheel.navStack    = [];
+                gearwheel.navStack     = [];
+                gearwheel.mainIndex    = 0;
                 gearwheel.fullJsonData = null;
                 gearwheel.visible     = true;
             }
