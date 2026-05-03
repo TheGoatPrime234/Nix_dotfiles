@@ -60,7 +60,8 @@ PanelWindow {
     property var navStack: []
     property int mainIndex: 0
     property var currentLevel: navStack.length > 0 ? navStack[navStack.length - 1] : null
-    property var activeList:   currentLevel ? currentLevel.items : menuEntries.map(e => ({ label: e.label, preview: "", children: null, action: null }))
+    property var cachedMainMenu: menuEntries.map(e => ({ label: e.label, preview: "", children: null, action: null }))
+    property var activeList: currentLevel ? currentLevel.items : cachedMainMenu
     property int currentIndex: currentLevel ? currentLevel.selectedIndex : mainIndex
     property int totalItems:   activeList.length
     property bool onMain:      navStack.length === 0
@@ -130,18 +131,22 @@ PanelWindow {
                 req.open("GET", "file:///home/cato/.config/rice/nix-switcher/links.json", false);
                 req.send(null);
                 if (req.status === 200 || req.status === 0) {
-                    var json = JSON.parse(req.responseText);
-                    gearwheel.fullJsonData = json;
-                    var items = Object.keys(json.theme).map(name => ({
-                        label:   name,
-                        preview: "",
-                        action:  function() {
-                            var cmd = "nix-switcher settheme " + name + " && nix-switcher apply && echo done";
-                            nixSwitcherProcess.command = ["bash", "-c", cmd];
-                            nixSwitcherProcess.running = true;
-                        }
-                    }));
-                    gearwheel.pushLevel("Themes", items);
+		    try {
+			var json = JSON.parse(req.responseText);
+			gearwheel.fullJsonData = json;
+			var items = Object.keys(json.theme).map(name => ({
+			    label:   name,
+			    preview: "",
+			    action:  function() {
+				var cmd = "nix-switcher settheme " + name + " && nix-switcher apply && echo done";
+				nixSwitcherProcess.command = ["bash", "-c", cmd];
+				nixSwitcherProcess.running = true;
+			    }
+			}));
+			gearwheel.pushLevel("Themes", items);
+		    } catch (e) {
+			console.log("Fehler beim lesen der json Datei:", e);
+		    }
                 }
             }
         },
@@ -153,25 +158,35 @@ PanelWindow {
                     var req = new XMLHttpRequest();
                     req.open("GET", "file:///home/cato/.config/rice/nix-switcher/links.json", false);
                     req.send(null);
-                    if (req.status === 200 || req.status === 0) json = JSON.parse(req.responseText);
-                    gearwheel.fullJsonData = json;
+		    if (req.status === 200 || req.status === 0) {
+			try {
+			    json = JSON.parse(req.responseText);
+			    gearwheel.fullJsonData = json;
+			} catch (e) {
+			    console.log("Fehler beim lesen der json Datei:", e);
+			}
+		    }
                 }
                 var cfgReq = new XMLHttpRequest();
                 cfgReq.open("GET", "file:///home/cato/.config/rice/nix-switcher/config.json", false);
                 cfgReq.send(null);
                 var walls = [];
                 if ((cfgReq.status === 200 || cfgReq.status === 0) && json) {
-                    var active = JSON.parse(cfgReq.responseText).theme;
-                    walls = json.theme[active] ? json.theme[active].wallpapers : [];
+		    try {
+			var active = JSON.parse(cfgReq.responseText).theme;
+			walls = json.theme[active] ? json.theme[active].wallpapers : [];
+		    } catch (e) {
+			console.log("Fehler beim lesen der json Datei:", e);
+		    }
                 }
                 var items = walls.map((path, idx) => ({
                     label:   "",
                     preview: "file://" + path,
-                    action:  (function(i) { return function() {
-                        var cmd = "nix-switcher setwall " + i + " && nix-switcher apply && echo done";
-                        nixSwitcherProcess.command = ["bash", "-c", cmd];
-                        nixSwitcherProcess.running = true;
-                    }; })(idx)
+		    action: function() {
+			var cmd = "nix-switcher setwall " + idx + " && nix-switcher apply && echo done";
+			nixSwitcherProcess.command = ["bash", "-c", cmd];
+			nixSwitcherProcess.running = true;
+		    }
                 }));
                 gearwheel.pushLevel("Wallpaper", items);
             }
@@ -190,7 +205,7 @@ PanelWindow {
                     label:   "",
                     preview: "file://" + path,
                     // children werden dynamisch beim Öffnen erzeugt
-                    children: (function(wallIdx) {
+                    children: function() {
                         var themeReq = new XMLHttpRequest();
                         themeReq.open("GET", "file:///home/cato/.config/rice/nix-switcher/links.json", false);
                         themeReq.send(null);
@@ -201,12 +216,12 @@ PanelWindow {
                             label:   name,
                             preview: "",
                             action:  function() {
-                                var cmd = "nix-switcher link " + wallIdx + " " + name + " && echo done";
+                                var cmd = "nix-switcher link " + idx + " " + name + " && echo done";
                                 nixSwitcherProcess.command = ["bash", "-c", cmd];
                                 nixSwitcherProcess.running = true;
                             }
                         }));
-                    })(idx)
+                    }
                 }));
                 gearwheel.pushLevel("Link › Wallpaper", items);
             }
