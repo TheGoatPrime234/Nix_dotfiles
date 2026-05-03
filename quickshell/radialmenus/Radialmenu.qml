@@ -71,34 +71,34 @@ PanelWindow {
         } else {
             var last = navStack[navStack.length - 1];
             var newLevel = { title: last.title, items: last.items, selectedIndex: i };
-            navStack = navStack.slice(0, navStack.length - 1).concat([newLevel]);
+            navStack = [...navStack.slice(0, -1), newLevel];
         }
     }
+
     function pushLevel(title, items) {
-        var stack = navStack.slice();
-        stack.push({ title: title, items: items, selectedIndex: 0 });
-        navStack = stack;
+        navStack = [...navStack, { title: title, items: items, selectedIndex: 0 }];
     }
+
     function popLevel() {
         if (navStack.length === 0) {
             gearwheel.visible = false;
             return;
         }
-        var stack = navStack.slice();
-        stack.pop();
-        navStack = stack;
+        navStack = navStack.slice(0, -1);
     }
     function confirmSelection() {
         var item = activeList[currentIndex];
         if (!item) return;
+
         if (onMain) {
             var entry = menuEntries[currentIndex];
             if (entry && entry.load) entry.load();
         } else if (item.children) {
-            pushLevel(item.label, item.children);
+            var childItems = typeof item.children === "function" ? item.children() : item.children;
+            pushLevel(item.label, childItems);
         } else if (item.action) {
-            // Blatt-Aktion ausführen
             item.action();
+            gearwheel.visible = false;
         }
     }
     property var fullJsonData: null
@@ -191,27 +191,29 @@ PanelWindow {
                 gearwheel.pushLevel("Wallpaper", items);
             }
         },
-        {
+	{
             label: "Link",
             load: function() {
                 var req = new XMLHttpRequest();
                 req.open("GET", "file:///home/cato/.config/rice/nix-switcher/wallpaper.json", false);
                 req.send(null);
                 var walls = [];
-                if (req.status === 200 || req.status === 0)
-                    walls = JSON.parse(req.responseText);
-
+                if (req.status === 200 || req.status === 0) {
+                    try { walls = JSON.parse(req.responseText); } 
+                    catch(e) { console.log("Fehler beim Lesen der wallpaper.json:", e); }
+                }
                 var items = walls.map((path, idx) => ({
                     label:   "",
                     preview: "file://" + path,
-                    // children werden dynamisch beim Öffnen erzeugt
                     children: function() {
                         var themeReq = new XMLHttpRequest();
                         themeReq.open("GET", "file:///home/cato/.config/rice/nix-switcher/links.json", false);
                         themeReq.send(null);
                         var themes = [];
-                        if (themeReq.status === 200 || themeReq.status === 0)
-                            themes = Object.keys(JSON.parse(themeReq.responseText).theme);
+                        if (themeReq.status === 200 || themeReq.status === 0) {
+                            try { themes = Object.keys(JSON.parse(themeReq.responseText).theme); } 
+                            catch(e) { console.log("Fehler beim Lesen der links.json:", e); }
+                        }
                         return themes.map(name => ({
                             label:   name,
                             preview: "",
@@ -268,7 +270,6 @@ PanelWindow {
             onRead: data => {
                 console.log("nix-switcher:", data);
                 if (data.trim() === "done") {
-                    gearwheel.visible      = false;
                     gearwheel.fullJsonData = null;
                 }
             }
