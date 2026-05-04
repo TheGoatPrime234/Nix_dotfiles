@@ -10,7 +10,7 @@ Rectangle {
     property string islandText: IslandState.text
     property string islandAppName: IslandState.appName
     function getAppIcon(name) {
-	var n = name.toLowerCatse();
+	var n = name.toLowerCase();
 	if (n.includes("spotify")) return "";
 	if (n.includes("disdord") || n.includes("vesktop")) return "";
 	if (n.includes("firefox") || n.includes("broswer")) return "";
@@ -19,7 +19,7 @@ Rectangle {
     }
 
     implicitWidth: islandActive ? Math.max(300, islandTextItem.implicitWidth + 80) : cpill.implicitWidth + Theme.impW
-    implicitHeight: islandActive ? (Theme.h2 + 2/(Theme.h1 - Theme.h2)) : Theme.h2
+    implicitHeight: islandActive ? Theme.h1 : Theme.h2
     radius: Theme.rad
     border {
         width: 1
@@ -53,46 +53,50 @@ Rectangle {
         Iusenixosbtw {} 
         Uhr2 {}
     }
-    Item {
-        id: islandContent
-        anchors.fill: parent
-	anchors.centerIn: parent
-        clip: true 
-        opacity: centerPillRoot.islandActive ? 1.0 : 0.0
-	Behavior on opacity {
-            SequentialAnimation {
-                PauseAnimation {
-                    duration: centerPillRoot.islandActive ? 150 : 0
-                }
-                NumberAnimation {
-                    duration: 500
-                }
-            }
-        }
-        RowLayout {
-	    anchors {
-		fill: parent
+    Engelsflügel {
+	anilength: 500
+	opacity: islandActive ? 1.0 : 0.0
+	Item {
+	    id: islandContent
+	    anchors.fill: parent
+	    anchors.centerIn: parent
+	    clip: true 
+	    opacity: centerPillRoot.islandActive ? 1.0 : 0.0
+	    Behavior on opacity {
+		SequentialAnimation {
+		    PauseAnimation {
+			duration: centerPillRoot.islandActive ? 150 : 0
+		    }
+		    NumberAnimation {
+			duration: 500
+		    }
+		}
 	    }
-            spacing: Theme.spc2
-	    Text {
-                text: centerPillRoot.getAppIcon(centerPillRoot.islandAppName)
-                font.family: Theme.fnt
-                font.pixelSize: Theme.t1 + 4 
-                color: Theme.ac1
-                Layout.alignment: Qt.AlignVCenter
+	    RowLayout {
+		anchors {
+		    fill: parent
+		}
+		spacing: Theme.spc2
+		Text {
+		    text: centerPillRoot.getAppIcon(centerPillRoot.islandAppName)
+		    font.family: Theme.fnt
+		    font.pixelSize: Theme.t1 + 4 
+		    color: Theme.ac1
+		    Layout.alignment: Qt.AlignVCenter
+		}
+		Text {
+		    id: islandTextItem
+		    text: centerPillRoot.islandText
+		    font.family: Theme.fnt
+		    font.pixelSize: Theme.t1
+		    font.bold: true
+		    color: "#ffffff" 
+		    Layout.fillWidth: true
+		    horizontalAlignment: Text.AlignHCenter
+		    verticalAlignment: Text.AlignVCenter
+		    elide: Text.ElideRight
+		}
 	    }
-            Text {
-                id: islandTextItem
-                text: centerPillRoot.islandText
-                font.family: Theme.fnt
-                font.pixelSize: Theme.t1
-                font.bold: true
-                color: "#ffffff" 
-                Layout.fillWidth: true
-		horizontalAlignment: Text.AlignHCenter
-		verticalAlignment: Text.AlignVCenter
-                elide: Text.ElideRight
-            }
-        }
+	}
     }
 }
