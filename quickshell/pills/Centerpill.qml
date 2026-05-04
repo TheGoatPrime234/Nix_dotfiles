@@ -5,27 +5,30 @@ import "./../color"
 import "./../widgets"
 
 Rectangle {
+    id: centerPillRoot 
+    property bool islandActive: IslandState.active
+    property string islandText: IslandState.text
+
     implicitWidth: cpill.implicitWidth + Theme.impW
     implicitHeight: Theme.h2
     radius: Theme.rad
     border {
-	width: 1
-	color: Theme.bg2
+        width: 1
+        color: Theme.bg2
     }
     color: Theme.bg0
+    
     Row {
         id: cpill
-	anchors {
-	    centerIn: parent
-	    margins: Theme.outmrg
-	    verticalCenter: parent.verticalCenter
-	}
+        anchors {
+            centerIn: parent
+            margins: Theme.outmrg
+            verticalCenter: parent.verticalCenter
+        }
         spacing: Theme.spc2
-        Uhr1 {
-        }
-        Icon {
-        }
-        Uhr2 {
-        }
+        
+        Uhr1 {}
+        Icon {}
+        Uhr2 {}
     }
 }

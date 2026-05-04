@@ -280,6 +280,13 @@ PanelWindow {
 			    gearwheel.pushLevel("Kittytheme", items);
 			}
 		    },
+		    {
+			label: "Apply",
+			action: function() {
+			    nixSwitcherProcess.command = ["bash", "-c", "nix-switcher apply"];
+			    nixSwitcherProcess.running = true;
+			}
+		    },
 		]);
 	    }
 	},
@@ -438,7 +445,7 @@ PanelWindow {
                 bottomMargin: 16
             }
             font { pixelSize: Theme.t1; family: Theme.fnt }
-            color:   Theme.fg
+            color: Theme.ac2
             opacity: 0.5
             text: {
                 if (gearwheel.navStack.length === 0) return "";
