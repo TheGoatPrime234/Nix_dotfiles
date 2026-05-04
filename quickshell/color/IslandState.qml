@@ -11,6 +11,10 @@ Item {
         active = true;
         islandTimer.restart(); 
     }
+    function close() {
+        active = false;
+        islandTimer.stop(); 
+    }
     Timer {
         id: islandTimer
         interval: 3000

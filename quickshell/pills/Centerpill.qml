@@ -98,5 +98,12 @@ Rectangle {
 		}
 	    }
 	}
+	MouseArea {
+	    anchors.fill: parent
+	    enabled: centerPillRoot.islandActive 
+	    onClicked: {
+		IslandState.close();
+	    }
+	}
     }
 }
