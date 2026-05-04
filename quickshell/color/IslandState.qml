@@ -20,7 +20,6 @@ Item {
         interval: 3000
         onTriggered: {
             active = false; 
-            console.log("🏝️ DYNAMIC ISLAND SCHLIESST SICH");
         }
     }
 }

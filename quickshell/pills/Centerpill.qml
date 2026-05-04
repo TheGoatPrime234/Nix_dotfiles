@@ -14,7 +14,6 @@ Rectangle {
     function getAppIcon(name) {
         var n = name.toLowerCase();
         if (n.includes("spotify")) return "";
-        // Fehler behoben ("disdord"):
         if (n.includes("discord") || n.includes("vesktop")) return ""; 
         if (n.includes("firefox") || n.includes("browser")) return "";
         if (n.includes("rebuild") || n.includes("nix")) return "󱄅";

@@ -44,7 +44,6 @@ Rectangle { // Notify Widget Root
 				onNotification: notification => {
 					notification.tracked = true
 					IslandState.trigger(notification.summary, notification.appName)
-					console.log("BACKEND EMPFANGEN: " + notification.summary)
 				}								
 			}
 	//
