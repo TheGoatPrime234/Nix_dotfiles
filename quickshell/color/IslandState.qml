@@ -4,18 +4,19 @@ import QtQuick
 Item {
     property bool active: false
     property string text: ""
-    function trigger(newText) {
+    property string appName: "" 
+    function trigger(newText, newAppName) {
         text = newText;
+        appName = newAppName;
         active = true;
         islandTimer.restart(); 
     }
-
     Timer {
         id: islandTimer
-        interval: 5000
+        interval: 3000
         onTriggered: {
             active = false; 
-            console.log("DYNAMIC ISLAND SCHLIESST SICH");
+            console.log("🏝️ DYNAMIC ISLAND SCHLIESST SICH");
         }
     }
 }
