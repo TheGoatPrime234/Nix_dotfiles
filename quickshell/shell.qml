@@ -10,6 +10,7 @@ import Quickshell.Services.UPower
 import Quickshell.Services.Notifications
 import "./color"
 import "./widgets"
+import "./pills"
 
 ShellRoot { 
     Variants {
@@ -60,32 +61,9 @@ ShellRoot {
                 
                 Item { Layout.fillWidth: true }
                 
-                Rectangle { 
-                    id: centerPillroot
-                    anchors {
-                        horizontalCenter: parent.horizontalCenter
-                        verticalCenter: parent.verticalCenter
-                    }
-                    implicitHeight: Theme.h2 
-                    implicitWidth: centerPillrow.implicitWidth + Theme.impW
-                    border {
-                        width: 1
-                        color: Theme.bg2
-                    }
-                    radius: Theme.rad
-                    color: Theme.bg0
-                    Row {
-                        id: centerPillrow
-                        anchors {
-                            centerIn: parent
-                            margins: Theme.outmrg
-                        }
-                        spacing: Theme.spc2
-                        Uhr1 {}
-                        Iusenixosbtw {}
-                        Uhr2 {}
-                    }
-                }
+		Centerpill {
+		    anchors.centerIn: parent
+		}
                 
                 Item { Layout.fillWidth: true }
                 
