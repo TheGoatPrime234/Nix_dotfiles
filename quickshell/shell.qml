@@ -11,6 +11,7 @@ import Quickshell.Services.Notifications
 import "./color"
 import "./widgets"
 import "./pills"
+import "./windows"
 
 ShellRoot { 
     Variants {
@@ -101,4 +102,5 @@ ShellRoot {
             }
         }
     }
+    Applauncher { }
 }
