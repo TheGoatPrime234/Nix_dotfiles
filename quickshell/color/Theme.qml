@@ -39,4 +39,5 @@ Singleton {
 
 	// Sondervariablen
 	readonly property real cavaw: 8
+	readonly property real engelsflügel: 20
 }

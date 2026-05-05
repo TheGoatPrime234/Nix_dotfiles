@@ -1,2 +1,3 @@
 singleton Theme Theme.qml
 singleton Current current.qml
+singleton IslandState IslandState.qml

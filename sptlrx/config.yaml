@@ -1,0 +1,49 @@
+cookie: "sp_t=c1d9eaa4-6cf3-4d42-b7a5-cb8ce96b9a02; sp_last_utm=%7B%22utm_medium%22%3A%22share-link%22%2C%22utm_source%22%3A%22share-options-sheet%22%7D; sp_dc=AQAoTcz4hgYVkJjnLwur2rODOVeKEOdtX-yG9NXz2kSQVjwoi02POOUJeHdQHcT7xA9uGmk6jJBZPCV4_YtzFyfr2tNAO3M2L4yx32oAes5Dlp0sGznz1MRfxqfQ_4AZL0FcdUH0KfdNSWY2IElRGuvwFq3mLgbEzknwWS2U_oIZt0Zx-urJvtuwHilyOpwHFLIjHiJG9MLxkI9XGIg; sp_key=790d938a-3b9f-49dc-9d79-5c8b6a7908d8; sp_gaid=0088fc49c56ae5e8f67195b0744106018fb984fa572933407d4f3e; sp_landing=https%3A%2F%2Fopen.spotify.com%2Fintl-de; sp_landingref=https%3A%2F%2Fwww.google.com%2F"
+player: spotify
+host: lyricsapi.vercel.app
+ignoreErrors: true
+timerInterval: 200
+updateInterval: 2000
+style:
+  hAlignment: center
+  before:
+    background: ""
+    foreground: ""
+    bold: true
+    italic: false
+    underline: false
+    strikethrough: false
+    blink: false
+    faint: false
+  current:
+    background: ""
+    foreground: ""
+    bold: true
+    italic: false
+    underline: false
+    strikethrough: false
+    blink: false
+    faint: false
+  after:
+    background: ""
+    foreground: ""
+    bold: false
+    italic: false
+    underline: false
+    strikethrough: false
+    blink: false
+    faint: true
+pipe:
+  length: 0
+  overflow: word
+mpd:
+  address: 127.0.0.1:6600
+  password: ""
+mopidy:
+  address: 127.0.0.1:6680
+mpris:
+  players: []
+browser:
+  port: 8974
+local:
+  folder: ""
