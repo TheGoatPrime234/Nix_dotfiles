@@ -1,20 +1,20 @@
 pragma Singleton
 import Quickshell
 import QtQuick
-import "./current.qml"
+import "./Current.qml"
 
 Singleton {
 	// Colors Bg
 	readonly property color trans: "transparent"
-	readonly property color bg0: Current.colors.bg0
-	readonly property color bg1: Current.colors.bg1
-	readonly property color bg2: Current.colors.bg2
-	readonly property color bg3: Current.colors.bg3
+	readonly property color bg0: Current.bg0
+	readonly property color bg1: Current.bg1
+	readonly property color bg2: Current.bg2
+	readonly property color fg0: Current.fg0
 
 	// Colors Ac
-	readonly property color ac1: Current.colors.ac1
-	readonly property color ac2: Current.colors.ac2
-	readonly property color ac3: Current.colors.ac3
+	readonly property color ac1: Current.ac0
+	readonly property color ac2: Current.ac1
+	readonly property color ac3: Current.ac2
 	readonly property color red: "#ff0000"
 
 	// Spacings, Radius, implicitWidth, etc
