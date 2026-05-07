@@ -2,6 +2,7 @@ import Quickshell
 import Quickshell.Wayland
 import Quickshell.Io
 import QtQuick
+import QtQuick.Effects
 import QtQuick.Layouts
 import "./../color"
 
@@ -442,7 +443,7 @@ PanelWindow {
                             family:    Theme.fnt
                         }
                         anchors.centerIn: parent
-                        color:   isSelected ? Theme.ac1 : Theme.trans
+			color:   isSelected ? (index % 2 === 0 ? Theme.ac1 : Theme.ac2) : Theme.trans
                         visible: isValid && activeItem && activeItem.label !== ""
                         text:    (activeItem && activeItem.label) ? activeItem.label : ""
                     }

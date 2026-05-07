@@ -22,7 +22,14 @@ syncthing
 user-dirs*
 
 kitty/current.conf
-rofi/current.rasi
 hypr/color.conf
-rice/nix-switcher
 quickshell/color/Current.qml
+
+rice/nix-switcher/links.json
+rice/nix-switcher/config.json
+rice/nix-switcher/kittythemes.json
+rice/nix-switcher/wallpaper.json
+rice/nix-switcher/wallpaper.json
+rice/nix-switcher/wallpaper
+rice/nix-switcher/kittythemes
+rice/nix-switcher/themes/*/
