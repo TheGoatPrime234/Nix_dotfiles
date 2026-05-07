@@ -141,7 +141,18 @@ PanelWindow {
                                 }
                             }
                         ]
-                    }
+		    },
+		    {
+			label: "QS Menus",
+			preview: "",
+			children: [
+			    {
+				label: "Notify Center",
+				preview: "",
+				action: function() { GlobalNotifs.toggleCenter() },
+			    }
+			],
+		    },
                 ]);
             }
         },

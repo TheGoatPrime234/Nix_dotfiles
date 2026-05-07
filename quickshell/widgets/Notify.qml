@@ -45,39 +45,4 @@ Rectangle { // Notify Widget Root
         running: true
         onTriggered: notifyWidgetroot.bootFinished = true
     }
-    NotificationServer {
-        id: notifyPopupserver
-        onNotification: notification => {
-            notification.tracked = true;
-            if (notifyWidgetroot.bootFinished) {
-                IslandState.trigger(notification.summary, notification.appName);
-            }
-        }
-    }
-    //
-    PopupWindow {
-        id: notifyPopupwind
-        anchor {
-            item: rightPillanchor
-            edges: Edges.Right
-            margins.top: Theme.h1
-        }
-        implicitWidth: notifyPopuproot.implicitWidth
-        implicitHeight: notifyPopuproot.implicitHeight
-        visible: false
-        color: Theme.trans
-        //
-        Rectangle {
-            id: notifyPopuproot
-            anchors.fill: parent
-            implicitHeight: 500
-            implicitWidth: 350
-            border {
-                width: 1
-                color: Theme.bg2
-            }
-            radius: Theme.rad
-            color: Theme.bg0
-        }
-    }
 }
