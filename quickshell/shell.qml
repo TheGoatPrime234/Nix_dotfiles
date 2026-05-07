@@ -103,4 +103,5 @@ ShellRoot {
         }
     }
     Applauncher { }
+    NotificationCenter { }
 }

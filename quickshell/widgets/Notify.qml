@@ -9,6 +9,7 @@ import Quickshell.Services.Pipewire
 import Quickshell.Services.UPower
 import Quickshell.Services.Notifications
 import "./../color"
+import "./../windows"
 
 Rectangle { // Notify Widget Root
     id: notifyWidgetroot
@@ -21,7 +22,6 @@ Rectangle { // Notify Widget Root
     }
     radius: Theme.rad
     color: Theme.bg1
-    //
     Text { //Notify Bell
         id: notifyWidgettext
         anchors.centerIn: parent
@@ -33,51 +33,14 @@ Rectangle { // Notify Widget Root
         color: Theme.ac1
         text: ""
     }
-    //
     MouseArea { // NotifypopupButton
-        id: notifyWidgetbutton
         anchors.fill: parent
-        onClicked: notifyPopupwind.visible = !notifyPopupwind.visible
+        onClicked: GlobalNotifs.toggleCenter()
     }
     property bool bootFinished: false
     Timer {
         interval: 800
         running: true
         onTriggered: notifyWidgetroot.bootFinished = true
-    }
-    NotificationServer {
-        id: notifyPopupserver
-        onNotification: notification => {
-            notification.tracked = true;
-            if (notifyWidgetroot.bootFinished) {
-                IslandState.trigger(notification.summary, notification.appName);
-            }
-        }
-    }
-    //
-    PopupWindow {
-        id: notifyPopupwind
-        anchor {
-            item: rightPillanchor
-            edges: Edges.Right
-            margins.top: Theme.h1
-        }
-        implicitWidth: notifyPopuproot.implicitWidth
-        implicitHeight: notifyPopuproot.implicitHeight
-        visible: false
-        color: Theme.trans
-        //
-        Rectangle {
-            id: notifyPopuproot
-            anchors.fill: parent
-            implicitHeight: 500
-            implicitWidth: 350
-            border {
-                width: 1
-                color: Theme.bg2
-            }
-            radius: Theme.rad
-            color: Theme.bg0
-        }
     }
 }
