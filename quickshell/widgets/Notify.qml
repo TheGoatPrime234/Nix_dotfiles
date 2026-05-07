@@ -9,6 +9,7 @@ import Quickshell.Services.Pipewire
 import Quickshell.Services.UPower
 import Quickshell.Services.Notifications
 import "./../color"
+import "./../windows"
 
 Rectangle { // Notify Widget Root
     id: notifyWidgetroot
@@ -21,7 +22,6 @@ Rectangle { // Notify Widget Root
     }
     radius: Theme.rad
     color: Theme.bg1
-    //
     Text { //Notify Bell
         id: notifyWidgettext
         anchors.centerIn: parent
@@ -33,11 +33,9 @@ Rectangle { // Notify Widget Root
         color: Theme.ac1
         text: ""
     }
-    //
     MouseArea { // NotifypopupButton
-        id: notifyWidgetbutton
         anchors.fill: parent
-        onClicked: notifyPopupwind.visible = !notifyPopupwind.visible
+        onClicked: GlobalNotifs.toggleCenter()
     }
     property bool bootFinished: false
     Timer {
