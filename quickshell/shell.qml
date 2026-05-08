@@ -104,4 +104,5 @@ ShellRoot {
     }
     Applauncher { }
     NotificationCenter { }
+    Dashboard { }
 }

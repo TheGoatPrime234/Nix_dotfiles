@@ -125,7 +125,7 @@ PanelWindow {
         }
     }
     property var fullJsonData: null
-    property var menuEntries: MenuLogic.buildMenu(gearwheel, GlobalNotifs, nixSwitcherProcess)
+    property var menuEntries: MenuLogic.buildMenu(gearwheel, GlobalNotifs, GlobalDashboard, nixSwitcherProcess)
     IpcHandler {
         target: "gearwheel"
         function toggle() {

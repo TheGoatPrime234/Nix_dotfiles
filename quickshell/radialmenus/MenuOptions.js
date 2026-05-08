@@ -1,4 +1,4 @@
-function buildMenu(gearwheel, GlobalNotifs, nixSwitcherProcess) {
+function buildMenu(gearwheel, GlobalNotifs, GlobalDashboard, nixSwitcherProcess) {
     return [
         {
             label: "Quick Set",

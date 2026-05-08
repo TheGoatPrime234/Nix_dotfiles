@@ -9,7 +9,6 @@ PanelWindow {
     id: dashWindow
     visible: GlobalDashboard.dashboardVisible
     color: Theme.trans
-    anchors.centerIn: parent
     width: 400
     height: dashBox.height
     WlrLayershell.layer: WlrLayer.Overlay

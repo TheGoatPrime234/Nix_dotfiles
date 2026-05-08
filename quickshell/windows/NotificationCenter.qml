@@ -9,7 +9,7 @@ import "./../color"
 PanelWindow {
     id: ncWindow
     visible: GlobalNotifs.centerVisible
-    color: "transparent"
+    color: Theme.trans
     implicitWidth: ncBox.width
     implicitHeight: ncBox.height + (ncWindow.visible ? 0 : 50)
     anchors { bottom: true; right: true }
@@ -183,7 +183,7 @@ PanelWindow {
                         Rectangle {
                             width: listView.width; height: 36; radius: Theme.rad / 2
                             color: isVisuallySelected ? Theme.ac1 : (isSelected ? Theme.bg1 : Theme.trans)
-                            border { width: 1; color: isSelected && !isVisuallySelected ? Theme.ac1 : "transparent" }
+                            border { width: 1; color: isSelected && !isVisuallySelected ? Theme.ac1 : Theme.trans }
                             MouseArea { anchors.fill: parent; onClicked: { listView.currentIndex = index; ncBox.toggleApp(modelData.appName); } }
                             RowLayout {
                                 anchors.fill: parent; anchors.margins: Theme.spc2; spacing: Theme.spc2
