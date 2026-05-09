@@ -21,6 +21,8 @@ spotify
 syncthing
 user-dirs*
 
+nix_timetracker
+
 kitty/current.conf
 hypr/color.conf
 quickshell/color/Current.qml
