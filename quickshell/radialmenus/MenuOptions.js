@@ -59,7 +59,7 @@ function buildMenu(gearwheel, GlobalNotifs, GlobalDashboard, nixSwitcherProcess)
 					label:   name,
 					preview: "",
 					action:  function() {
-					    var cmd = "nix-switcher settheme " + name + " && nix-switcher apply && echo done";
+					    var cmd = "nix-switcher settheme " + name + " && nix-switcher apply";
 					    nixSwitcherProcess.command = ["bash", "-c", cmd];
 					    nixSwitcherProcess.running = true;
 					}
@@ -139,7 +139,7 @@ function buildMenu(gearwheel, GlobalNotifs, GlobalDashboard, nixSwitcherProcess)
 					label:   name,
 					preview: "",
 					action:  function() {
-					    var cmd = "nix-switcher link " + idx + " " + name + " && echo done";
+					    var cmd = "nix-switcher link " + idx + " " + name;
 					    nixSwitcherProcess.command = ["bash", "-c", cmd];
 					    nixSwitcherProcess.running = true;
 					}
