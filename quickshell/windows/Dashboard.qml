@@ -12,8 +12,10 @@ PanelWindow {
     visible: GlobalDashboard.dashboardVisible
     color: Theme.trans
     width: 650 
-    height: dashBox.height
-
+    
+    // --- FIX: Feste Fensterhöhe (groß genug für den StartTab + 30px Bounce-Spielraum) ---
+    height: 520 
+    
     WlrLayershell.layer: WlrLayer.Overlay
     WlrLayershell.anchors.bottom: true
     WlrLayershell.margins.bottom: 16
@@ -22,30 +24,33 @@ PanelWindow {
     
     IpcHandler { target: "dashboard"; function toggle() { GlobalDashboard.toggle(); } }
     MouseArea { anchors.fill: parent; onClicked: GlobalDashboard.close() }
-    
-    Timer {
-        id: sysTimer
-        interval: 2000
-        onTriggered: sysDataProcess.start() // Das muss in den SystemTab oder hier bleiben, wenn es global gebraucht wird.
-    }
 
     Rectangle {
         id: dashBox
         width: parent.width
-        height: 400
+        
+        // --- DIE ANIMATION PASSIERT NUR NOCH HIER DRINNEN ---
+        // Media = 340 (klein), System = 420 (normal), Start = 480 (groß)
+        height: currentTab === 1 ? 340 : (currentTab === 2 ? 480 : 420)
+        
         color: Theme.bg0
         radius: Theme.rad
-        border { width: 1; color: Theme.bg1 }
+        border { width: 1; color: Theme.bg2 }
+        
+        // Klebt am Boden des transparenten PanelWindows
         anchors.horizontalCenter: parent.horizontalCenter
-        anchors.bottom: parent.bottom
+        anchors.bottom: parent.bottom 
+        
         opacity: dashWindow.visible ? 1.0 : 0.0
         transform: Translate { y: dashWindow.visible ? 0 : 30 }
         
+        // --- Weiche interne Höhen-Animation ---
+        Behavior on height { NumberAnimation { duration: 400; easing.type: Easing.OutExpo } }
         Behavior on opacity { NumberAnimation { duration: 300 } }
         Behavior on transform { NumberAnimation { duration: 400; easing.type: Easing.OutExpo } }
         
         property int currentTab: 2 
-        property bool isContentFocused: false // NEU: Der Vim-Focus-Layer
+        property bool isContentFocused: false 
         
         property var tabs: [
             { name: "System", icon: "" },
@@ -54,12 +59,12 @@ PanelWindow {
             { name: "Netzwerk", icon: "" },
             { name: "Wetter", icon: "" }
         ]
-
+        
         onVisibleChanged: { 
             if (visible) { 
                 forceActiveFocus();
                 dashBox.currentTab = 2; 
-                dashBox.isContentFocused = false;
+                dashBox.isContentFocused = false; 
             }
         }
         
