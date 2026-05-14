@@ -14,6 +14,8 @@ asciiArt:
   color: "#5A56E0"
 
 work:
+  then:
+    - [paplay, ~/pomo/metal_pipe.mp3]
   duration: 25m
   title: work session
 
@@ -26,6 +28,8 @@ work:
     icon: ~/my/icon.png
 
 break:
+  then:
+    - [paplay, ~/pomo/metal_pipe.mp3]
   duration: 5m
 
   # will run after the session ends
@@ -33,7 +37,8 @@ break:
     - [spd-say, "Back to work!"]
 
 longBreak:
-  # enable long break after a certain number of work sessions
+  then:
+    - [paplay, ~/pomo/metal_pipe.mp3]
   enabled: true
 
   # number of work sessions before long break
